@@ -2,6 +2,7 @@
 using CoreTemp.Services.Seed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -32,59 +33,47 @@ namespace CoreTemp.Api.Helpers.Configuration
         }
         public static void AddPayInitialize(this IServiceCollection services)
         {
-            services.AddMvc(opt =>
+            //services.AddMvc(opt =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //    .RequireAuthenticatedUser().Build();
+            //    opt.Filters.Add(new AuthorizeFilter(policy));
+            //});
+
+
+            services.AddMvcCore(config =>
             {
-                //opt.EnableEndpointRouting = false;
-                //opt.ReturnHttpNotAcceptable = true;
-                //opt.SuppressAsyncSuffixInActionNames = false;
-                //opt.SslPort = 4052;
-
+                config.ReturnHttpNotAcceptable = true;
+                config.Filters.Add(typeof(RequireHttpsAttribute));
                 var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
-
-                //var jsonFormatter = opt.OutputFormatters.OfType<SystemTextJsonOutputFormatter>().Single();
-                //opt.OutputFormatters.Remove(jsonFormatter);
-                //opt.OutputFormatters.Add(new IonOutputFormatter(jsonFormatter));
-
-                //opt.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-                //opt.InputFormatters.Add(new XmlSerializerInputFormatter(opt));
+                    .RequireAuthenticatedUser()
+                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddApiExplorer()
+            .AddFormatterMappings()
+            .AddDataAnnotations()
+            .AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", builder =>
+                 builder.WithOrigins("http://localhost:4200", "https://localhost:44318")
+                         .AllowAnyMethod()
+                         .AllowAnyHeader()
+                         .AllowCredentials());
             });
 
 
-            //services.AddMvcCore(config =>
-            //{
-            //    config.ReturnHttpNotAcceptable = true;
-            //    config.Filters.Add(typeof(RequireHttpsAttribute));
-            //    var policy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
-            //    config.Filters.Add(new AuthorizeFilter(policy));
-            //})
-            //.AddApiExplorer()
-            //.AddFormatterMappings()
-            //.AddDataAnnotations()
-            //.AddCors(opt =>
-            //{
-            //    opt.AddPolicy("CorsPolicy", builder =>
-            //     builder.WithOrigins("http://localhost:4200", "https://localhost:44318")
-            //             .AllowAnyMethod()
-            //             .AllowAnyHeader()
-            //             .AllowCredentials());
-            //});
-
-
-            //services.AddHsts(opt =>
-            //{
-            //    opt.MaxAge = TimeSpan.FromDays(180);
-            //    opt.IncludeSubDomains = true;
-            //    opt.Preload = true;
-            //});
+            services.AddHsts(opt =>
+            {
+                opt.MaxAge = TimeSpan.FromDays(180);
+                opt.IncludeSubDomains = true;
+                opt.Preload = true;
+            });
 
 
 
-            services.AddCors(opt => opt.AddPolicy("CorsPolicy", builder =>
-                builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            //services.AddCors(opt => opt.AddPolicy("CorsPolicy", builder =>
+            //    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
 
             services.AddResponseCaching();
