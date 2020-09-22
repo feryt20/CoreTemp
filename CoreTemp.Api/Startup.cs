@@ -14,6 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using CoreTemp.Services.Seed;
 using Microsoft.AspNetCore.Http;
+using ZNetCS.AspNetCore.Logging.EntityFrameworkCore;
+using CoreTemp.Data.Models.Log;
+using CoreTemp.Data.DatabaseContext;
 
 namespace CoreTemp.Api
 {
@@ -25,7 +28,6 @@ namespace CoreTemp.Api
         }
 
         public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -45,6 +47,7 @@ namespace CoreTemp.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedService seed)
         {
+            
             app.UsePayExceptionHandle(env);
             app.UsePayInitialize(seed);
 
@@ -56,7 +59,7 @@ namespace CoreTemp.Api
             {
                 RequestPath = new PathString("/wwwroot")
             });
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -23,7 +23,6 @@ namespace CoreTemp.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging((hostingContext, logging) =>
                 {
-                    //logging.AddNLog();
                     logging.AddEntityFramework<LogDbContext, ExtendedLog>();
                 }).ConfigureWebHostDefaults(webBuilder =>
                 {
