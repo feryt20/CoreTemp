@@ -17,7 +17,7 @@ namespace CoreTemp.Services.Utility
         bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
         Task<string> GenerateJwtTokenAsync(User user, bool isRemember);
 
-        Task<TokenResponseDto> GenerateNewTokenAsync(TokenRequestDto tokenRequestDto, bool needPassword);
+        Task<TokenResponseDto> GenerateNewTokenAsync(TokenRequestDto tokenRequestDto);
         Task<TokenResponseDto> CreateAccessTokenAsync(User user, string refreshToken);
         MyToken CreateRefreshToken(string clientId, string userId, bool isRemember);
 

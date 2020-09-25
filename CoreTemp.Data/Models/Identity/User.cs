@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CoreTemp.Data.Models.Site;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,5 +38,6 @@ namespace CoreTemp.Data.Models.Identity
 
         public virtual ICollection<MyToken> MyTokens { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using CoreTemp.Common.Helpers;
 using CoreTemp.Data.DatabaseContext;
+using CoreTemp.Data.DTOs.Common;
 using CoreTemp.Data.DTOs.Identity;
+using CoreTemp.Data.DTOs.Token;
 using CoreTemp.Data.DTOs.User;
 using CoreTemp.Data.Models.Identity;
 using CoreTemp.Repo.Infrastructure;
+using CoreTemp.Services.Sms;
 using CoreTemp.Services.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,28 +25,35 @@ using Microsoft.Extensions.Logging;
 namespace CoreTemp.Api.Controllers
 {
     [ApiVersion("1")]
-    [Route("api/v{v:apiVersion}")]
+    [Route("api/v{v:apiVersion}/auth")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1_Api")]
     public class AuthController : ControllerBase
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
         private readonly IUtilities _utilities;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IWebHostEnvironment _env;
+        private readonly ISmsService _smsService;
         private ApiReturn<string> errorModel;
-        public AuthController(IUnitOfWork<CoreTempDbContext> dbContext,
-            IMapper mapper, ILogger<AuthController> logger, IUtilities utilities,
-            UserManager<User> userManager, SignInManager<User> signInManager)
+        public AuthController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<User> userManager,
+             IMapper mapper, ILogger<AuthController> logger, IUtilities utilities, ISmsService smsService,
+            IWebHostEnvironment env
+            )
         {
             _db = dbContext;
-            _logger = logger;
-            _mapper = mapper;
-            _utilities = utilities;
             _userManager = userManager;
-            _signInManager = signInManager;
+            _mapper = mapper;
+            _logger = logger;
+            _utilities = utilities;
+            _smsService = smsService;
+            _env = env;
+            if (string.IsNullOrWhiteSpace(_env.WebRootPath))
+            {
+                env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
 
             errorModel = new ApiReturn<string>
             {
@@ -50,80 +63,90 @@ namespace CoreTemp.Api.Controllers
             };
         }
 
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
-        {
-            var userToCreate = new User
-            {
-                Name = userForRegisterDto.Name,
-                UserName = userForRegisterDto.UserName,
-                PhoneNumber = userForRegisterDto.PhoneNumber,
-                DateOfBirth = DateTime.Now,
-                IsActive = true
-            };
-
-            var result = await _userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
-
-            if (result.Succeeded)
-            {
-                return Ok(new
-                {
-                    user = userForRegisterDto
-                });
-            }
-
-            return BadRequest("نام کاربری قبلا ثبت شده");
-        }
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
+        [ProducesResponseType(typeof(ApiReturn<LoginResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Login(TokenRequestDto tokenRequestDto)
         {
-            var user = await _userManager.FindByNameAsync(userForLoginDto.UserName);
-            if (user == null)
+            ApiReturn<LoginResponseDto> model = new ApiReturn<LoginResponseDto> { Status = true };
+
+            switch (tokenRequestDto.GrantType)
             {
-                _logger.LogWarning($"{userForLoginDto.UserName} درخواست لاگین ناموفق داشته است");
-                return Unauthorized("کاربری با این یوزر و پس وجود ندارد");
+
+                case "password":
+                    var result = await _utilities.GenerateNewTokenAsync(tokenRequestDto);
+                    if (result.status)
+                    {
+                        var userForReturn = _mapper.Map<UserForDetailedDto>(result.user);
+                        model.Message = "ورود با موفقیت انجام شد";
+                        model.Result = new LoginResponseDto
+                        {
+                            token = result.token,
+                            refresh_token = result.refresh_token,
+                            user = userForReturn
+                        };
+
+                        return Ok(model);
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + result.message);
+                        errorModel.Message = "1x111keyvanx11";
+                        return BadRequest(errorModel);
+                    }
+                case "social"://ToDo
+                    var socialresult = await _utilities.GenerateNewTokenAsync(tokenRequestDto);
+                    if (socialresult.status)
+                    {
+                        var userForReturn = _mapper.Map<UserForDetailedDto>(socialresult.user);
+                        model.Message = "ورود با رفرش توکن با موفقیت انجام شد";
+                        model.Result = new LoginResponseDto
+                        {
+                            token = socialresult.token,
+                            refresh_token = socialresult.refresh_token,
+                            user = _mapper.Map<UserForDetailedDto>(socialresult.user)
+                        };
+                        return Ok(model);
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + socialresult.message);
+                        errorModel.Message = "1x111keyvanx11";
+                        return BadRequest(errorModel);
+                    }
+                case "refresh_token":
+                    var res = await _utilities.RefreshAccessTokenAsync(tokenRequestDto);
+                    if (res.status)
+                    {
+                        model.Message = "ورود با رفرش توکن با موفقیت انجام شد";
+                        model.Result = new LoginResponseDto
+                        {
+                            token = res.token,
+                            refresh_token = res.refresh_token,
+                            user = _mapper.Map<UserForDetailedDto>(res.user)
+                        };
+                        return Ok(model);
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + res.message);
+                        errorModel.Message = "0x000keyvanx00";
+                        return BadRequest(errorModel);
+                    }
+                default:
+                    errorModel.Message = "خطا در اعتبار سنجی";
+                    return BadRequest(errorModel);
             }
-            var result = await _signInManager.CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
-            if (result.Succeeded)
-            {
-                var appUser = _userManager.Users
-                       .FirstOrDefault(u => u.NormalizedUserName == userForLoginDto.UserName.ToUpper());
-
-                var userForReturn = _mapper.Map<UserForLoginDto>(appUser);
-                _logger.LogInformation($"{userForLoginDto.UserName} لاگین کرده است");
-                return Ok(new
-                {
-                    token = await _utilities.GenerateJwtTokenAsync(appUser, userForLoginDto.IsRemember),
-                    user = userForReturn
-                });
-            }
-            else
-            {
-                _logger.LogWarning($"{userForLoginDto.UserName} درخواست لاگین ناموفق داشته است");
-                return Unauthorized("کاربری با این یوزر و پس وجود ندارد");
-            }
-        }
-
-
-        [Authorize(Policy = "RequiredAdminRole")]
-        [HttpGet("getval")]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _db._UserRepository.GetAllAsync();
-
-            var userProfile = _mapper.Map<IEnumerable<UserProfileDto>>(users);
-            return Ok(userProfile);
         }
 
 
         [AllowAnonymous]
-        [HttpPost("register2")]
-        [ProducesResponseType(typeof(ApiReturn<UserForDetailedDto>), StatusCodes.Status201Created)]
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(ApiReturn<UserForDetailedDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register2(UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             var model = new ApiReturn<UserForDetailedDto>
             {
@@ -137,7 +160,6 @@ namespace CoreTemp.Api.Controllers
                 return BadRequest(model);
             }
             var OtpId = userForRegisterDto.UserName + "-OTP";
-            //
             var code = await _db._VerificationCodeRepository.GetByIdAsync(OtpId);
             if (code == null)
             {
@@ -166,7 +188,6 @@ namespace CoreTemp.Api.Controllers
                     PhoneNumberConfirmed = true
                 };
 
-
                 var result = await _userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
 
                 if (result.Succeeded)
@@ -175,20 +196,16 @@ namespace CoreTemp.Api.Controllers
                     await _userManager.AddToRolesAsync(creaatedUser, new[] { "User" });
 
                     var userForReturn = _mapper.Map<UserForDetailedDto>(userToCreate);
-
-                    _logger.LogInformation($"{userForRegisterDto.Name} - {userForRegisterDto.UserName} ثبت نام کرده است");
+                    //log
+                    _logger.LogInformation($"{userForRegisterDto.UserName} ثبت نام کرده است");
                     //
                     model.Message = "ثبت نام شما با موفقیت انجام شد";
                     model.Result = userForReturn;
-                    return CreatedAtRoute("GetUsers", new
-                    {
-                        controller = "Users",
-                        v = HttpContext.GetRequestedApiVersion().ToString(),
-                        id = userToCreate.Id
-                    }, model);
+                    return Ok(model);
                 }
                 else if (result.Errors.Any())
                 {
+                    //log
                     _logger.LogWarning(result.Errors.First().Description);
                     //
                     errorModel.Message = result.Errors.First().Description;
@@ -207,5 +224,114 @@ namespace CoreTemp.Api.Controllers
             }
         }
 
+
+        [AllowAnonymous]
+        [HttpPost("code")]
+        [ProducesResponseType(typeof(ApiReturn<int>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiReturn<int>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetVerificationCode(GetVerificationCodeDto getVerificationCodeDto)
+        {
+            var model = new ApiReturn<int>
+            {
+                Result = 0
+            };
+            getVerificationCodeDto.Mobile = getVerificationCodeDto.Mobile.ToMobile();
+            if (getVerificationCodeDto.Mobile == null)
+            {
+                model.Status = false;
+                model.Message = "شماره موبایل صحیح نمیباشد مثال : 09121234567";
+                return BadRequest(model);
+            }
+            var OtpId = getVerificationCodeDto.Mobile + "-OTP";
+
+            var verfyCodes = await _db._VerificationCodeRepository.GetAllAsync();
+            foreach (var vc in verfyCodes.Where(p => p.RemoveDate < DateTime.Now))
+            {
+                if (vc.RemoveDate < DateTime.Now)
+                {
+                    _db._VerificationCodeRepository.Delete(vc.Id);
+                }
+                await _db.SaveAsync();
+            }
+
+            var oldOTP = verfyCodes.SingleOrDefault(p => p.Id == OtpId);
+            if (oldOTP != null)
+            {
+                if (oldOTP.ExpirationDate > DateTime.Now)
+                {
+                    var seconds = Math.Abs((DateTime.Now - oldOTP.ExpirationDate).Seconds);
+                    model.Status = false;
+                    model.Message = "لطفا " + seconds + " ثانیه دیگر دوباره امتحان کنید ";
+                    model.Result = seconds;
+                    return BadRequest(model);
+                }
+                else
+                {
+                    _db._VerificationCodeRepository.Delete(OtpId);
+                    await _db.SaveAsync();
+                }
+            }
+            //
+            var user = await _db._UserRepository.GetAsync(p => p.UserName == getVerificationCodeDto.Mobile);
+            if (user == null)
+            {
+                var randomOTP = new Random().Next(10000, 99999);
+                if (_smsService.SendFastVerificationCode(getVerificationCodeDto.Mobile, randomOTP.ToString(),"verify"))
+                {
+                    var vc = new VerificationCode
+                    {
+                        Code = randomOTP.ToString(),
+                        ExpirationDate = DateTime.Now.AddSeconds(60),
+                        RemoveDate = DateTime.Now.AddMinutes(2)
+                    };
+                    vc.Id = OtpId;
+                    //
+                    await _db._VerificationCodeRepository.InsertAsync(vc);
+                    await _db.SaveAsync();
+
+                    model.Status = true;
+                    model.Message = "کد فعال سازی با موفقیت ارسال شد";
+                    model.Result = (int)(vc.ExpirationDate - DateTime.Now).TotalSeconds;
+                    return Ok(model);
+                }
+                else
+                {
+                    model.Status = false;
+                    model.Message = "خطا در ارسال کد فعال سازی";
+                    return BadRequest(model);
+                }
+            }
+            else
+            {
+                model.Status = false;
+                model.Message = "کاربری با این شماره موبایل از قبل وجود دارد";
+                return BadRequest(model);
+            }
+        }
+
+
+        [Authorize(Policy = "RequiredUserRole")]
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _db._UserRepository.GetByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userProfile = _mapper.Map<UserProfileDto>(users);
+            return Ok(userProfile);
+        }
+
+        [Authorize(Policy = "RequiredAdminRole")]
+        [HttpGet("page")]
+        public async Task<IActionResult> GetBlogs([FromQuery] PaginationDto paginationDto)
+        {
+            var blogsFromRepo = await _db._UserRepository
+                .GetAllPagedListAsync(
+                paginationDto);
+
+            Response.AddPagination(blogsFromRepo.CurrentPage, blogsFromRepo.PageSize,
+                blogsFromRepo.TotalCount, blogsFromRepo.TotalPage);
+            //MostViewed
+            return Ok(blogsFromRepo);
+
+        }
     }
 }

@@ -39,28 +39,35 @@ namespace CoreTemp.Api.Helpers.Configuration
             //    .RequireAuthenticatedUser().Build();
             //    opt.Filters.Add(new AuthorizeFilter(policy));
             //});
+            //services.AddCors(opt => opt.AddPolicy("CorsPolicy", builder =>
+            //    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
 
             services.AddMvcCore(config =>
             {
-                config.ReturnHttpNotAcceptable = true;
+                //config.ReturnHttpNotAcceptable = true;
                 config.Filters.Add(typeof(RequireHttpsAttribute));
                 var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddApiExplorer()
-            .AddFormatterMappings()
-            .AddDataAnnotations()
-            .AddCors(opt =>
-            {
-                opt.AddPolicy("CorsPolicy", builder =>
-                 builder.WithOrigins("http://localhost:4200", "https://localhost:44318")
+             .AddApiExplorer()
+             .AddFormatterMappings()
+             .AddDataAnnotations()
+             .AddCors(opt =>
+             {
+                 opt.AddPolicy("CorsPolicy", builder =>
+                 builder.WithOrigins("https://localhost:44345", "http://localhost:65444")
                          .AllowAnyMethod()
                          .AllowAnyHeader()
                          .AllowCredentials());
-            });
+             })
+             .AddNewtonsoftJson(opt =>
+             {
+                 opt.SerializerSettings.ReferenceLoopHandling =
+                 Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+             });
 
 
             services.AddHsts(opt =>
@@ -69,11 +76,6 @@ namespace CoreTemp.Api.Helpers.Configuration
                 opt.IncludeSubDomains = true;
                 opt.Preload = true;
             });
-
-
-
-            //services.AddCors(opt => opt.AddPolicy("CorsPolicy", builder =>
-            //    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
 
             services.AddResponseCaching();

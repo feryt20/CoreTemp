@@ -20,7 +20,6 @@ namespace CoreTemp.Api.Mappings
                     opt.MapFrom(src => src.DateOfBirth.ToAge());
                 });
 
-            CreateMap<UserForUpdateDto, User>();
 
             CreateMap<User, UserForLoginDto>();
         }

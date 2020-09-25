@@ -1,5 +1,6 @@
 ﻿using CoreTemp.Repo.Infrastructure;
 using CoreTemp.Services.Seed;
+using CoreTemp.Services.Sms;
 using CoreTemp.Services.Utility;
 using DnsClient;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ namespace CoreTemp.Api.Helpers.Configuration
             services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
             services.AddScoped<IUtilities, Utilities>();
+            services.AddScoped<ISmsService, SmsService>();
             services.AddSingleton<ILookupClient, LookupClient>();
             //services.AddScoped<UserCheckIdFilter>();
         }

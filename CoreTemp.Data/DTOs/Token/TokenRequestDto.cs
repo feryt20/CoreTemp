@@ -22,8 +22,5 @@ namespace CoreTemp.Data.DTOs.Token
         public string Password { get; set; }
         [Description("در صورت true بودن به مدت 20 دقیقه فعال میباشد")]
         public bool IsRemember { get; set; } = false;
-        [Required]
-        [Description("...")]
-        public string Provider { get; set; } = "MADPAY";
     }
 }

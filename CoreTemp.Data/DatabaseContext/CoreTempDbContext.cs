@@ -1,4 +1,5 @@
 ﻿using CoreTemp.Data.Models.Identity;
+using CoreTemp.Data.Models.Site;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,12 @@ namespace CoreTemp.Data.DatabaseContext
         public DbSet<MyToken> MyTokens { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
 
+        public DbSet<ProductGroup> ProductGroups { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<PaymentLog> PaymentLogs { get; set; }
+        public DbSet<PaymentUniqueNumber> PaymentUniqueNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -48,6 +55,10 @@ namespace CoreTemp.Data.DatabaseContext
                     .HasForeignKey(ur => ur.UserId)
                     .IsRequired();
             });
+
+            builder.Entity<Product>()
+                .HasIndex(u => u.ProductId2)
+                .IsUnique();
 
             //builder.Entity<Photo>()
             //   .Property(x => x.RowVersion)
