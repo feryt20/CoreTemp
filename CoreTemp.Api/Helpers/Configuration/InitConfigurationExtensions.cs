@@ -36,6 +36,8 @@ namespace CoreTemp.Api.Helpers.Configuration
         }
         public static void AddPayInitialize(this IServiceCollection services)
         {
+            services.AddControllersWithViews();
+
             //services.AddMvc(opt =>
             //{
             //    var policy = new AuthorizationPolicyBuilder()

@@ -10,7 +10,6 @@ using CoreTemp.Data.DTOs.Product;
 using CoreTemp.Data.Models.Site;
 using CoreTemp.Repo.Infrastructure;
 using CoreTemp.Services.Upload;
-using CoreTemp.Services.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,25 +21,23 @@ namespace CoreTemp.Api.Controllers.Admin
     [ApiVersion("1")]
     [Route("api/v{v:apiVersion}/productgroups")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v1_Api")]
+    [ApiExplorerSettings(GroupName = "v1_Admin")]
     [Authorize(Policy = "RequiredAdminRole")]
     public class ProductGroupsController : ControllerBase
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IMapper _mapper;
         private readonly ILogger<ProductGroupsController> _logger;
-        private readonly IUtilities _utilities;
         private readonly IUploadService _uploadService;
         private readonly IWebHostEnvironment _env;
         private ApiReturn<string> errorModel;
 
         public ProductGroupsController(IUnitOfWork<CoreTempDbContext> dbContext, IUploadService uploadService,
-             IMapper mapper, ILogger<ProductGroupsController> logger, IUtilities utilities,IWebHostEnvironment env)
+             IMapper mapper, ILogger<ProductGroupsController> logger, IWebHostEnvironment env)
         {
             _db = dbContext;
             _mapper = mapper;
             _logger = logger;
-            _utilities = utilities;
             _uploadService = uploadService;
             _env = env;
             
@@ -112,8 +109,8 @@ namespace CoreTemp.Api.Controllers.Admin
                     var uploadRes = await _uploadService.UploadFileToLocal(
                         productGroupDto.File,
                         Guid.NewGuid().ToString(),
-                        "",
-                        $"{Request.Scheme ?? ""}://{Request.Host.Value ?? ""}{""}",
+                        _env.WebRootPath,
+                        $"{Request.Scheme ?? ""}://{Request.Host.Value ?? ""}{Request.PathBase.Value ?? ""}",
                         "Files\\ProductGroup"
                     );
                     if (uploadRes.Status)
@@ -128,10 +125,10 @@ namespace CoreTemp.Api.Controllers.Admin
                 else
                 {
                     productGroupDto.ImageUrl = string.Format("{0}://{1}{2}/{3}",
-                      Request.Scheme,
-                      Request.Host.Value ?? "",
-                      "",
-                      "Files/ProductGroup/Logo.jpg");
+                        Request.Scheme,
+                        Request.Host.Value ?? "",
+                        Request.PathBase.Value ?? "",
+                      "wwwroot/Files/ProductGroup/Logo.jpg");
                 }
             }
 
@@ -164,8 +161,8 @@ namespace CoreTemp.Api.Controllers.Admin
                     var uploadRes = await _uploadService.UploadFileToLocal(
                         productGroupDto.File,
                         Guid.NewGuid().ToString(),
-                        "",
-                        $"{Request.Scheme ?? ""}://{Request.Host.Value ?? ""}{""}",
+                        _env.WebRootPath,
+                        $"{Request.Scheme ?? ""}://{Request.Host.Value ?? ""}{Request.PathBase.Value ?? ""}",
                         "Files\\ProductGroup"
                     );
                     if (uploadRes.Status)
@@ -182,8 +179,8 @@ namespace CoreTemp.Api.Controllers.Admin
                     productGroupDto.ImageUrl = string.Format("{0}://{1}{2}/{3}",
                       Request.Scheme,
                       Request.Host.Value ?? "",
-                      "",
-                      "Files/ProductGroup/Logo.jpg");
+                      Request.PathBase.Value ?? "",
+                      "wwwroot/Files/ProductGroup/Logo.jpg");
                 }
             }
 

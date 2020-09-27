@@ -12,7 +12,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.7.4" />
+    <PackageReference Include="Parbad" Version="3.5.1" />
+    <PackageReference Include="Parbad.AspNetCore" Version="1.0.6" />
+    <PackageReference Include="Parbad.Gateway.ZarinPal" Version="1.0.5" />
+    <PackageReference Include="Parbad.Storage.Cache" Version="1.0.3" />
+    <PackageReference Include="Parbad.Storage.EntityFrameworkCore" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,8 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Files\Product\" />
-    <Folder Include="Files\ProductGroup\" />
+    <Folder Include="wwwroot\Files\Profile\" />
+    <Folder Include="wwwroot\Files\ProductGroup\" />
+    <Folder Include="wwwroot\Files\Product\" />
+    <Folder Include="wwwroot\Files\Slider\" />
   </ItemGroup>
 
 </Project>

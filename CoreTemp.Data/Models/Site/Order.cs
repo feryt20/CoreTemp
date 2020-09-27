@@ -13,7 +13,6 @@ namespace CoreTemp.Data.Models.Site
         {
             this.OrderDetails = new HashSet<OrderDetail>();
             this.PaymentLogs = new HashSet<PaymentLog>();
-            this.PaymentUniqueNumbers = new HashSet<PaymentUniqueNumber>();
             this.DiscVar = 0;
             this.PostalCost = 10000;
             this.OrderExpireDate = DateTime.Now.AddMinutes(30);
@@ -91,7 +90,6 @@ namespace CoreTemp.Data.Models.Site
         //Navigation Properties
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<PaymentLog> PaymentLogs { get; set; }
-        public virtual ICollection<PaymentUniqueNumber> PaymentUniqueNumbers { get; set; }
 
         [ForeignKey("UserId")]
         public virtual MyUser User { get; set; }

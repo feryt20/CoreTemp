@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +16,9 @@ namespace CoreTemp.Data.DTOs.User
         public int Age { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string City { get; set; }
+        public string ImageUrl { get; set; }
         public string NewPass { get; set; }
+
+        public IFormFile File { get; set; }
     }
 }

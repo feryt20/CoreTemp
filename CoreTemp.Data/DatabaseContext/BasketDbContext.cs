@@ -23,17 +23,17 @@ namespace CoreTemp.Data.DatabaseContext
         }
 
 
-        public DbSet<Basket> Baskets { get; set; }
+        public DbSet<MyBasket> Baskets { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Basket>()
+            builder.Entity<MyBasket>()
                 .HasIndex(u => u.UserId);
 
-            builder.Entity<Basket>()
+            builder.Entity<MyBasket>()
                 .HasIndex(u => u.ProductId);
         }
     }

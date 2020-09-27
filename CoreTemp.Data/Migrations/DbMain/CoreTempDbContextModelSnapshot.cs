@@ -59,34 +59,7 @@ namespace CoreTemp.Data.Migrations.DbMain
                     b.ToTable("MyTokens");
                 });
 
-            modelBuilder.Entity("CoreTemp.Data.Models.Identity.Role", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("CoreTemp.Data.Models.Identity.User", b =>
+            modelBuilder.Entity("CoreTemp.Data.Models.Identity.MyUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -185,6 +158,33 @@ namespace CoreTemp.Data.Migrations.DbMain
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("CoreTemp.Data.Models.Identity.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
                 });
 
             modelBuilder.Entity("CoreTemp.Data.Models.Identity.UserRole", b =>
@@ -364,23 +364,6 @@ namespace CoreTemp.Data.Migrations.DbMain
                     b.HasIndex("OrderId");
 
                     b.ToTable("PaymentLogs");
-                });
-
-            modelBuilder.Entity("CoreTemp.Data.Models.Site.PaymentUniqueNumber", b =>
-                {
-                    b.Property<long>("PaymentUniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("OrderId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("PaymentUniqueId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("PaymentUniqueNumbers");
                 });
 
             modelBuilder.Entity("CoreTemp.Data.Models.Site.Product", b =>
@@ -577,6 +560,73 @@ namespace CoreTemp.Data.Migrations.DbMain
                     b.ToTable("ProductGroups");
                 });
 
+            modelBuilder.Entity("CoreTemp.Data.Models.Site.Slider", b =>
+                {
+                    b.Property<long>("SliderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderBeside")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderBeside2")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SliderDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SliderMain")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderMain2")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderMobileMain")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SliderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("SliderTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SliderTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("SliderTop")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderUnder1")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderUnder2")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SliderUnder4")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SliderUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SliderId");
+
+                    b.ToTable("Sliders");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -668,7 +718,7 @@ namespace CoreTemp.Data.Migrations.DbMain
 
             modelBuilder.Entity("CoreTemp.Data.Models.Identity.MyToken", b =>
                 {
-                    b.HasOne("CoreTemp.Data.Models.Identity.User", "User")
+                    b.HasOne("CoreTemp.Data.Models.Identity.MyUser", "User")
                         .WithMany("MyTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -683,7 +733,7 @@ namespace CoreTemp.Data.Migrations.DbMain
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreTemp.Data.Models.Identity.User", "User")
+                    b.HasOne("CoreTemp.Data.Models.Identity.MyUser", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -692,7 +742,7 @@ namespace CoreTemp.Data.Migrations.DbMain
 
             modelBuilder.Entity("CoreTemp.Data.Models.Site.Order", b =>
                 {
-                    b.HasOne("CoreTemp.Data.Models.Identity.User", "User")
+                    b.HasOne("CoreTemp.Data.Models.Identity.MyUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
                 });
@@ -716,13 +766,6 @@ namespace CoreTemp.Data.Migrations.DbMain
                 {
                     b.HasOne("CoreTemp.Data.Models.Site.Order", "Order")
                         .WithMany("PaymentLogs")
-                        .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("CoreTemp.Data.Models.Site.PaymentUniqueNumber", b =>
-                {
-                    b.HasOne("CoreTemp.Data.Models.Site.Order", "Order")
-                        .WithMany("PaymentUniqueNumbers")
                         .HasForeignKey("OrderId");
                 });
 
@@ -753,7 +796,7 @@ namespace CoreTemp.Data.Migrations.DbMain
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CoreTemp.Data.Models.Identity.User", null)
+                    b.HasOne("CoreTemp.Data.Models.Identity.MyUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -762,7 +805,7 @@ namespace CoreTemp.Data.Migrations.DbMain
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CoreTemp.Data.Models.Identity.User", null)
+                    b.HasOne("CoreTemp.Data.Models.Identity.MyUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -771,7 +814,7 @@ namespace CoreTemp.Data.Migrations.DbMain
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CoreTemp.Data.Models.Identity.User", null)
+                    b.HasOne("CoreTemp.Data.Models.Identity.MyUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

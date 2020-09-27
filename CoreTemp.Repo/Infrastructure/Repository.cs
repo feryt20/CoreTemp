@@ -51,6 +51,12 @@ namespace CoreTemp.Repo.Infrastructure
             _dbSet.Remove(entity);
         }
 
+        public void DeleteRange(IEnumerable<TEntity> entities)
+        {
+            if (entities == null)
+                throw new ArgumentException("nulll");
+            _dbSet.RemoveRange(entities);
+        }
         public void Delete(Expression<Func<TEntity, bool>> where)
         {
             IEnumerable<TEntity> obj = _dbSet.Where(where).AsEnumerable();
@@ -59,6 +65,7 @@ namespace CoreTemp.Repo.Infrastructure
                 _dbSet.Remove(item);
             }
         }
+        
         public TEntity GetById(object id)
         {
             return _dbSet.Find(id);
@@ -116,6 +123,12 @@ namespace CoreTemp.Repo.Infrastructure
                 throw new ArgumentException("nulll");
             await _dbSet.AddAsync(entity);
         }
+        public async Task InsertRangeAsync(List<TEntity> entities)
+        {
+            if (entities == null)
+                throw new ArgumentException("nulll");
+            await _dbSet.AddRangeAsync(entities);
+        }
 
         public async Task<TEntity> GetByIdAsync(object id)
         {
@@ -142,9 +155,12 @@ namespace CoreTemp.Repo.Infrastructure
             {
                 query = query.Where(filter);
             }
-            foreach (var include in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            if (includeEntity != null)
             {
-                query = query.Include(include);
+                foreach (var include in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(include);
+                }
             }
             if (orderBy != null)
             {

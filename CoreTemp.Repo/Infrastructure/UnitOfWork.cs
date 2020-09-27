@@ -1,4 +1,6 @@
 ﻿using CoreTemp.Common.Helpers;
+using CoreTemp.Repo.Repositories.Basket.Interface;
+using CoreTemp.Repo.Repositories.Basket.Repository;
 using CoreTemp.Repo.Repositories.Financial.Interface;
 using CoreTemp.Repo.Repositories.Financial.Repository;
 using CoreTemp.Repo.Repositories.Main.Interface;
@@ -107,8 +109,63 @@ namespace CoreTemp.Repo.Infrastructure
             }
         }
 
-        #region methods
+        private IOrderDetailRepository orderDetailRepository;
+        public IOrderDetailRepository _OrderDetailRepository
+        {
+            get
+            {
+                if (orderDetailRepository == null)
+                {
+                    orderDetailRepository = new OrderDetailRepository(_db);
+                }
+                return orderDetailRepository;
+            }
+        }
+        private IPaymentLogRepository paymentLogRepository;
+        public IPaymentLogRepository _PaymentLogRepository
+        {
+            get
+            {
+                if (paymentLogRepository == null)
+                {
+                    paymentLogRepository = new PaymentLogRepository(_db);
+                }
+                return paymentLogRepository;
+            }
+        }
+        
+        private ISliderRepository sliderRepository;
+        public ISliderRepository _SliderRepository
+        {
+            get
+            {
+                if (sliderRepository == null)
+                {
+                    sliderRepository = new SliderRepository(_db);
+                }
+                return sliderRepository;
+            }
+        }
 
+
+
+
+
+
+
+
+        private IMyBasketRepository myBasketRepository;
+        public IMyBasketRepository MyBasketRepository
+        {
+            get
+            {
+                if (myBasketRepository == null)
+                {
+                    myBasketRepository = new MyBasketRepository(_db);
+                }
+                return myBasketRepository;
+            }
+        }
 
         #region privateFinancialrepository
         private IEntryRepository entryRepository;
@@ -136,6 +193,8 @@ namespace CoreTemp.Repo.Infrastructure
             }
         }
         #endregion
+
+        #region methods
 
         public void Save()
         {

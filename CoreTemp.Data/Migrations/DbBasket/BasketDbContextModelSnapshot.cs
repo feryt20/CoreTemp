@@ -18,7 +18,7 @@ namespace CoreTemp.Data.Migrations.DbBasket
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CoreTemp.Data.Models.Basket.Basket", b =>
+            modelBuilder.Entity("CoreTemp.Data.Models.Basket.MyBasket", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -28,9 +28,17 @@ namespace CoreTemp.Data.Migrations.DbBasket
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("ProductDiscount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductPrice")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TotalPrice")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
                         .IsRequired()

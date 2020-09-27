@@ -11,7 +11,6 @@ using CoreTemp.Data.DTOs.Identity;
 using CoreTemp.Data.DTOs.Order;
 using CoreTemp.Data.Models.Site;
 using CoreTemp.Repo.Infrastructure;
-using CoreTemp.Services.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,23 +21,21 @@ namespace CoreTemp.Api.Controllers.Admin
     [ApiVersion("1")]
     [Route("api/v{v:apiVersion}/orders")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v1_Api")]
+    [ApiExplorerSettings(GroupName = "v1_Admin")]
     [Authorize(Policy = "RequiredAdminRole")]
     public class OrdersController : ControllerBase
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IMapper _mapper;
         private readonly ILogger<OrdersController> _logger;
-        private readonly IUtilities _utilities;
         private ApiReturn<string> errorModel;
 
         public OrdersController(IUnitOfWork<CoreTempDbContext> dbContext,
-            IMapper mapper, ILogger<OrdersController> logger, IUtilities utilities)
+            IMapper mapper, ILogger<OrdersController> logger)
         {
             _db = dbContext;
             _mapper = mapper;
             _logger = logger;
-            _utilities = utilities;
 
             errorModel = new ApiReturn<string>
             {

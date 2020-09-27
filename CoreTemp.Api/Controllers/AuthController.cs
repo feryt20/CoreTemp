@@ -27,7 +27,7 @@ namespace CoreTemp.Api.Controllers
     [ApiVersion("1")]
     [Route("api/v{v:apiVersion}/auth")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v1_Api")]
+    [ApiExplorerSettings(GroupName = "v1_Site")]
     public class AuthController : ControllerBase
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;

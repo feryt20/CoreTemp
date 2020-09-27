@@ -16,6 +16,7 @@ namespace CoreTemp.Repo.Infrastructure
         void Update(TEntity entity);
         void Delete(object id);
         void Delete(TEntity entity);
+        void DeleteRange(IEnumerable<TEntity> entities);
         void Delete(Expression<Func<TEntity, bool>> where);
 
         TEntity GetById(object id);
@@ -32,6 +33,7 @@ namespace CoreTemp.Repo.Infrastructure
 
         Task<int> CountAsync();
         Task InsertAsync(TEntity entity);
+        Task InsertRangeAsync(List<TEntity> entities);
         Task<TEntity> GetByIdAsync(object id);
         Task<TEntity> GetAsNoTrackingByIdAsync(Expression<Func<TEntity, bool>> filter = null);
         Task<IEnumerable<TEntity>> GetAllAsync();

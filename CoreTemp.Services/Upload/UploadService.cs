@@ -59,6 +59,7 @@ namespace CoreTemp.Services.Upload
                         PublicId = "0",
                         Url = $"{UrlBegan}/{"wwwroot/" + Url.Split('\\').Aggregate("", (current, str) => current + (str + "/")) + fileNewName}"
                     };
+                    //Url = $"{UrlBegan}/{"wwwroot/" + Url.Split('\\').Aggregate("", (current, str) => current + (str + "/")) + fileNewName}"
 
                 }
                 catch (Exception ex)

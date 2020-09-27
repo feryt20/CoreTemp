@@ -2,18 +2,138 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using CoreTemp.Common.Common;
+using CoreTemp.Common.Helpers;
+using CoreTemp.Data.DatabaseContext;
+using CoreTemp.Data.DTOs.Common;
+using CoreTemp.Data.DTOs.Identity;
+using CoreTemp.Data.DTOs.Product;
+using CoreTemp.Data.Models.Site;
+using CoreTemp.Repo.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CoreTemp.Api.Controllers.Site
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{v:apiVersion}/index")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1_Site")]
+    [AllowAnonymous]
     public class IndexController : ControllerBase
     {
-        //ProductsGroups
         //Sliders
-        //Products 1 & 2 & 3 index
-        //Products pagination
+
+        private readonly IUnitOfWork<CoreTempDbContext> _db;
+        private readonly IMapper _mapper;
+        private readonly ILogger<IndexController> _logger;
+        private ApiReturn<string> errorModel;
+
+        public IndexController(IUnitOfWork<CoreTempDbContext> dbContext,
+            IMapper mapper, ILogger<IndexController> logger)
+        {
+            _db = dbContext;
+            _mapper = mapper;
+            _logger = logger;
+
+            errorModel = new ApiReturn<string>
+            {
+                Status = false,
+                Message = "",
+                Result = null
+            };
+        }
+
+        [HttpGet("list")]
+        [ProducesResponseType(typeof(ApiReturn<PagedList<Product>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> List([FromQuery] PaginationDto paginationDto)
+        {
+            ApiReturn<PagedList<Product>> model = new ApiReturn<PagedList<Product>> { Status = true };
+
+            var order = await _db._ProductRepository.GetAllPagedListAsync(paginationDto, p => !p.IsDeleted);
+            if (order != null)
+            {
+                Response.AddPagination(order.CurrentPage, order.PageSize,
+                order.TotalCount, order.TotalPage);
+
+                model.Message = "Success";
+                model.Result = order;
+
+                return Ok(model);
+            }
+
+            errorModel.Message = "Error";
+            return BadRequest(errorModel);
+        }
+
+        [HttpGet("listByGroup")]
+        [ProducesResponseType(typeof(ApiReturn<PagedList<Product>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListByGroup(int group,[FromQuery] PaginationDto paginationDto)
+        {
+            ApiReturn<PagedList<Product>> model = new ApiReturn<PagedList<Product>> { Status = true };
+
+            var order = await _db._ProductRepository.GetAllPagedListAsync(paginationDto, p => p.ProductGroupId == group && !p.IsDeleted);
+            if (order != null)
+            {
+                Response.AddPagination(order.CurrentPage, order.PageSize,
+                order.TotalCount, order.TotalPage);
+
+                model.Message = "Success";
+                model.Result = order;
+
+                return Ok(model);
+            }
+
+            errorModel.Message = "Error";
+            return BadRequest(errorModel);
+        }
+
+        [HttpGet("product")]
+        [ProducesResponseType(typeof(ApiReturn<ProductDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Product(int id)
+        {
+            ApiReturn<ProductDto> model = new ApiReturn<ProductDto> { Status = true };
+
+            var pg = await _db._ProductRepository.GetAsync(p => p.ProductId == id && !p.IsDeleted);
+
+            if (pg != null)
+            {
+                var pgForreturn = _mapper.Map<ProductDto>(pg);
+                model.Message = "Success";
+                model.Result = pgForreturn;
+
+                return Ok(model);
+            }
+
+            errorModel.Message = "Error";
+            return BadRequest(errorModel);
+        }
+
+        [HttpGet("group")]
+        [ProducesResponseType(typeof(ApiReturn<IEnumerable<ProductGroup>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Group()
+        {
+            ApiReturn<IEnumerable<ProductGroup>> model = new ApiReturn<IEnumerable<ProductGroup>> { Status = true };
+
+            var pg = await _db._ProductGroupRepository.GetAllAsync(p => !p.IsDeleted,orderBy: p=>p.OrderBy(i=>i.ProductGroupId),null);
+            if (pg != null)
+            {
+                model.Message = "Success";
+                model.Result = pg;
+
+                return Ok(model);
+            }
+
+            errorModel.Message = "Error";
+            return BadRequest(errorModel);
+        }
+
     }
 }

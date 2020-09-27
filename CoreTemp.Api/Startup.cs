@@ -42,6 +42,7 @@ namespace CoreTemp.Api
 
             services.AddPayApiVersioning();
             services.AddPaySwagger();
+            services.AddMadParbad(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +54,7 @@ namespace CoreTemp.Api
 
             app.UsePayAuth();
             app.UsePaySwagger();
-
+            app.UseMadParbad();
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -63,6 +64,9 @@ namespace CoreTemp.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                      name: "pay",
+                    pattern: "{controller=PG}/{action=pay}/{id?}");
             });
         }
     }

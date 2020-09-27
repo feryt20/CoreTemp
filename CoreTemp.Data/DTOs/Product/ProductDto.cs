@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -12,148 +13,148 @@ namespace CoreTemp.Data.DTOs.Product
 
         [StringLength(20)]
         //[Index(IsUnique = true)]
-        [Display(Name = "کد کالا")]
+        [Description("کد کالا")]
         public string ProductId2 { get; set; }
 
-        [Display(Name = "گروه کالا")]
+        [Description("گروه کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int ProductGroupId { get; set; }
 
-        [Display(Name = "وضعیت نمایش کالا")]
+        [Description("وضعیت نمایش کالا")]
         public bool ProductStatus { get; set; }
 
         [StringLength(400)]
-        [Display(Name = "آدرس کالا")]
+        [Description("آدرس کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string ProductUrl { get; set; }
 
         [StringLength(400)]
-        [Display(Name = "عنوان کالا")]
+        [Description("عنوان کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string ProductTitle { get; set; }
 
         [StringLength(400)]
-        [Display(Name = "عنوان کوتاه کالا")]
+        [Description("عنوان کوتاه کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string ProductShortTitle { get; set; }
 
         [StringLength(400)]
-        [Display(Name = "عنوان انگلیسی کالا")]
+        [Description("عنوان انگلیسی کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string ProductEnglishTitle { get; set; }
 
-        [Display(Name = "مختصر شرح کالا")]
+        [Description("مختصر شرح کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string ProductSummery { get; set; }
 
-        [Display(Name = "شرح کالا")]
+        [Description("شرح کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         //[AllowHtml]
         public string ProductDescription { get; set; }
 
-        [Display(Name = "قیمت کالا")]
+        [Description("قیمت کالا")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#,0 تومان}")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public long ProductPrice { get; set; }
 
-        [Display(Name = "امتیاز کالا")]
+        [Description("امتیاز کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int ProductPoint { get; set; }
 
-        [Display(Name = "تخفیف داشته باشد")]
+        [Description("تخفیف داشته باشد")]
         public bool HaveDiscount { get; set; }
 
-        [Display(Name = "میزان تخفیف")]
+        [Description("میزان تخفیف")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#,0 تومان}")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public long ProductDiscount { get; set; }
 
-        [Display(Name = "مدت تخفیف")]
+        [Description("مدت تخفیف")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime DiscountTime { get; set; }
 
-        [Display(Name = "وضعیت نمایش کامنت")]
+        [Description("وضعیت نمایش کامنت")]
         public bool CommentIsActive { get; set; }
 
-        [Display(Name = "موجودی انبار")]
+        [Description("موجودی انبار")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int ProductQtty { get; set; }
 
-        [Display(Name = "کلمات کلیدی")]
+        [Description("کلمات کلیدی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string KeyWords { get; set; }
 
-        [Display(Name = "تگ ها")]
+        [Description("تگ ها")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Tags { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "تصویر کالا")]
+        [Description("تصویر کالا")]
         public string ImageUrl { get; set; }
 
 
         [StringLength(150)]
-        [Display(Name = "تصویر کوچک کالا")]
+        [Description("تصویر کوچک کالا")]
         public string ProductThumbnailImageUrl { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "تصویر کوچک کالا")]
+        [Description("تصویر کوچک کالا")]
         public string ProductThumbnailImageUrl2 { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "تصویر کوچک کالا")]
+        [Description("تصویر کوچک کالا")]
         public string ProductThumbnailImageUrl3 { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "تصویر کوچک کالا")]
+        [Description("تصویر کوچک کالا")]
         public string ProductThumbnailImageUrl4 { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "تصویر کوچک کالا")]
+        [Description("تصویر کوچک کالا")]
         public string ProductThumbnailImageUrl5 { get; set; }
 
 
-        [Display(Name = "تعداد بازدید کالا")]
+        [Description("تعداد بازدید کالا")]
         public int ProductViews { get; set; }
 
-        [Display(Name = "تعداد نظرات کالا")]
+        [Description("تعداد نظرات کالا")]
         public int ProductComments { get; set; }
 
-        [Display(Name = "رای مثبت")]
+        [Description("رای مثبت")]
         public int ProductLike { get; set; }
 
-        [Display(Name = "تعداد فروش")]
+        [Description("تعداد فروش")]
         public int ProductSells { get; set; }
 
-        [Display(Name = "تاریخ انقضا کالا")]
+        [Description("تاریخ انقضا کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime ExpireDate { get; set; }
 
-        [Display(Name = "تاریخ ایجاد کالا")]
+        [Description("تاریخ ایجاد کالا")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime CreateTime { get; set; }
 
-        [Display(Name = "تاریخ ویرایش کالا")]
+        [Description("تاریخ ویرایش کالا")]
         public DateTime EditTime { get; set; }
 
-        [Display(Name = "فعال برای خرید")]
+        [Description("فعال برای خرید")]
         public bool ProductBuy { get; set; }
 
-        [Display(Name = "شگفت انگیز")]
+        [Description("شگفت انگیز")]
         public bool ProductVip { get; set; }
 
-        [Display(Name = "پیشنهاد لحظه ای")]
+        [Description("پیشنهاد لحظه ای")]
         public bool ProductVip2 { get; set; }
 
-        [Display(Name = "مدت شگفت انگیز")]
+        [Description("مدت شگفت انگیز")]
         [Required(ErrorMessage = "لطفا {0} را وارد نمایید")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime VipDate { get; set; }
 
-        [Display(Name = "آیا کد های تخفیفات سایت شاملش شود")]
+        [Description("آیا کد های تخفیفات سایت شاملش شود")]
         public bool IsDiscount { get; set; }
 
 

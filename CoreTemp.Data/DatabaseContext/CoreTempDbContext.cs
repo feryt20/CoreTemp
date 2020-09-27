@@ -32,10 +32,10 @@ namespace CoreTemp.Data.DatabaseContext
 
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Slider> Sliders { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<PaymentLog> PaymentLogs { get; set; }
-        public DbSet<PaymentUniqueNumber> PaymentUniqueNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

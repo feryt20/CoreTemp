@@ -8,8 +8,9 @@ using CoreTemp.Data.DTOs.Identity;
 using CoreTemp.Data.DTOs.User;
 using CoreTemp.Data.Models.Identity;
 using CoreTemp.Repo.Infrastructure;
-using CoreTemp.Services.Utility;
+using CoreTemp.Services.Upload;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,30 +21,30 @@ namespace CoreTemp.Api.Controllers.User
     [ApiVersion("1")]
     [Route("api/v{v:apiVersion}/user/profile")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v1_Api")]
+    [ApiExplorerSettings(GroupName = "v1_User")]
     [Authorize(Policy = "RequiredUserRole")]
     public class ProfileController : ControllerBase
     {
-        //Show Profile
-        //Edit Profile
-        //Change Password
         //Change Image
         //Change Phone
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly UserManager<MyUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<ProfileController> _logger;
-        private readonly IUtilities _utilities;
+        private readonly IUploadService _uploadService;
+        private readonly IWebHostEnvironment _env;
         private ApiReturn<string> errorModel;
 
         public ProfileController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<MyUser> userManager,
-            IMapper mapper, ILogger<ProfileController> logger, IUtilities utilities)
+            IMapper mapper, ILogger<ProfileController> logger, IUploadService uploadService,
+            IWebHostEnvironment env)
         {
             _db = dbContext;
             _userManager = userManager;
             _mapper = mapper;
             _logger = logger;
-            _utilities = utilities;
+            _uploadService = uploadService;
+            _env = env;
 
             errorModel = new ApiReturn<string>
             {
@@ -79,19 +80,48 @@ namespace CoreTemp.Api.Controllers.User
         [HttpPut("update")]
         [ProducesResponseType(typeof(ApiReturn<UserProfileDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(UserProfileDto userProfileDto)
+        public async Task<IActionResult> Update([FromForm] UserProfileDto userProfileDto)
         {
             ApiReturn<UserProfileDto> model = new ApiReturn<UserProfileDto> { Status = true };
 
             //var user = await _db._UserRepository.GetUserByUserNameAsync(User.Identity.Name);
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
+            if (userProfileDto.File != null)
+            {
+                if (userProfileDto.File.Length > 0)
+                {
+                    var uploadRes = await _uploadService.UploadFileToLocal(
+                        userProfileDto.File,
+                        Guid.NewGuid().ToString(),
+                        _env.WebRootPath,
+                        $"{Request.Scheme ?? ""}://{Request.Host.Value ?? ""}{Request.PathBase.Value ?? ""}",
+                        "Files\\Profile"
+                    );
+                    if (uploadRes.Status)
+                    {
+                        userProfileDto.ImageUrl = uploadRes.Url;
+                    }
+                    else
+                    {
+                        return BadRequest(uploadRes.Message);
+                    }
+                }
+                else
+                {
+                    userProfileDto.ImageUrl = string.Format("{0}://{1}{2}/{3}",
+                        Request.Scheme,
+                        Request.Host.Value ?? "",
+                        Request.PathBase.Value ?? "",
+                        "wwwroot/Files/Profile/Logo.jpg");
+                }
+            }
             user.Name = userProfileDto.Name;
             user.PhoneNumber = userProfileDto.PhoneNumber;
             user.Gender = userProfileDto.Gender;
             user.City = userProfileDto.City;
             user.Address = userProfileDto.Address;
             user.DateOfBirth = userProfileDto.DateOfBirth;
+            user.ImageUrl = userProfileDto.ImageUrl;
 
             if (!string.IsNullOrEmpty(userProfileDto.NewPass))
             {
