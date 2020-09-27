@@ -19,7 +19,7 @@ namespace CoreTemp.Api.Helpers.Configuration
     {
         public static void AddPayIdentityInit(this IServiceCollection services)
         {
-            IdentityBuilder builder = services.AddIdentityCore<User>(opt =>
+            IdentityBuilder builder = services.AddIdentityCore<MyUser>(opt =>
             {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequiredLength = 4;
@@ -31,7 +31,7 @@ namespace CoreTemp.Api.Helpers.Configuration
             builder.AddEntityFrameworkStores<CoreTempDbContext>();
             builder.AddRoleValidator<RoleValidator<Role>>();
             builder.AddRoleManager<RoleManager<Role>>();
-            builder.AddSignInManager<SignInManager<User>>();
+            builder.AddSignInManager<SignInManager<MyUser>>();
             builder.AddDefaultTokenProviders();
         }
 

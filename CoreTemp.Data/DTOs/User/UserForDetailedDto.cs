@@ -12,8 +12,6 @@ namespace CoreTemp.Data.DTOs.User
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public bool Gender { get; set; }
-        public int Age { get; set; }
-        public DateTime LastActive { get; set; }
         public string City { get; set; }
     }
 }

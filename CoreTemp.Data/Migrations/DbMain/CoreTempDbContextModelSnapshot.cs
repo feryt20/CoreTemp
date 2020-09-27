@@ -313,10 +313,7 @@ namespace CoreTemp.Data.Migrations.DbMain
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ProducerId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("ProductId")
+                    b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("TotalPrice")
@@ -393,9 +390,6 @@ namespace CoreTemp.Data.Migrations.DbMain
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BrandGroupId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("CommentIsActive")
                         .HasColumnType("bit");
 
@@ -411,13 +405,6 @@ namespace CoreTemp.Data.Migrations.DbMain
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FilePassword")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
                     b.Property<bool>("HaveDiscount")
                         .HasColumnType("bit");
 
@@ -431,23 +418,9 @@ namespace CoreTemp.Data.Migrations.DbMain
                     b.Property<bool>("IsDiscount")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsFile")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsOtherUrl")
-                        .HasColumnType("bit");
-
                     b.Property<string>("KeyWords")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OtherImageUrl")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("OtherUrl")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
 
                     b.Property<bool>("ProductBuy")
                         .HasColumnType("bit");
@@ -734,7 +707,9 @@ namespace CoreTemp.Data.Migrations.DbMain
 
                     b.HasOne("CoreTemp.Data.Models.Site.Product", "Product")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoreTemp.Data.Models.Site.PaymentLog", b =>

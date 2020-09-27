@@ -13,7 +13,8 @@ namespace CoreTemp.Data.DTOs.User
         public string Address { get; set; }
         public bool Gender { get; set; }
         public int Age { get; set; }
-        public DateTime LastActive { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string City { get; set; }
+        public string NewPass { get; set; }
     }
 }

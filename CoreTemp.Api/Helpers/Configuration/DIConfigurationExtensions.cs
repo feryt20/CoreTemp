@@ -1,6 +1,7 @@
 ﻿using CoreTemp.Repo.Infrastructure;
 using CoreTemp.Services.Seed;
 using CoreTemp.Services.Sms;
+using CoreTemp.Services.Upload;
 using CoreTemp.Services.Utility;
 using DnsClient;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +24,9 @@ namespace CoreTemp.Api.Helpers.Configuration
 
             services.AddScoped<IUtilities, Utilities>();
             services.AddScoped<ISmsService, SmsService>();
+            services.AddScoped<IUploadService, UploadService>();
+
             services.AddSingleton<ILookupClient, LookupClient>();
-            //services.AddScoped<UserCheckIdFilter>();
         }
     }
 }

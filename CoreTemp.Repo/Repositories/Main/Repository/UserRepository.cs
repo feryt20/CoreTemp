@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CoreTemp.Repo.Repositories.Main.Repository
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository : Repository<MyUser>, IUserRepository
     {
         private readonly DbContext _db;
         public UserRepository(DbContext dbContext) : base(dbContext)
@@ -18,7 +18,7 @@ namespace CoreTemp.Repo.Repositories.Main.Repository
             _db ??= (CoreTempDbContext)dbContext;
         }
 
-        public async Task<User> GetUserByUserNameAsync(string username)
+        public async Task<MyUser> GetUserByUserNameAsync(string username)
         {
             return await GetAsync(p => p.UserName.Equals(username.ToLower()));
         }

@@ -33,10 +33,6 @@ namespace CoreTemp.Data.Models.Site
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int ProductGroupId { get; set; }
 
-        [Display(Name = "برند کالا")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public int BrandGroupId { get; set; }
-
         [Display(Name = "وضعیت نمایش کالا")]
         public bool ProductStatus { get; set; }
 
@@ -110,20 +106,6 @@ namespace CoreTemp.Data.Models.Site
         [Display(Name = "تصویر کالا")]
         public string ImageUrl { get; set; }
 
-        [Display(Name = "فروش فایل")]
-        public bool IsFile { get; set; }
-
-        [StringLength(150)]
-        [Display(Name = "فایل دانلودی کالا")]
-        public string FileUrl { get; set; }
-
-        [Display(Name = "پسورد فایل")]
-        public string FilePassword { get; set; }
-
-        [StringLength(150)]
-        [Display(Name = "سایر تصاویر کالا")]
-        public string OtherImageUrl { get; set; }
-
         [StringLength(150)]
         [Display(Name = "تصویر کوچک کالا")]
         public string ProductThumbnailImageUrl { get; set; }
@@ -186,13 +168,6 @@ namespace CoreTemp.Data.Models.Site
 
         [Display(Name = "آیا کد های تخفیفات سایت شاملش شود")]
         public bool IsDiscount { get; set; }
-
-        [StringLength(250)]
-        [Display(Name = "شماره تماس")]
-        public string OtherUrl { get; set; }
-
-        [Display(Name = "تماس بگیرید")]
-        public bool IsOtherUrl { get; set; }
 
         public bool IsDeleted { get; set; }
 

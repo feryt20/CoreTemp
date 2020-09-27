@@ -31,17 +31,16 @@ namespace CoreTemp.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<MyUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthController> _logger;
         private readonly IUtilities _utilities;
         private readonly IWebHostEnvironment _env;
         private readonly ISmsService _smsService;
         private ApiReturn<string> errorModel;
-        public AuthController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<User> userManager,
+        public AuthController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<MyUser> userManager,
              IMapper mapper, ILogger<AuthController> logger, IUtilities utilities, ISmsService smsService,
-            IWebHostEnvironment env
-            )
+            IWebHostEnvironment env)
         {
             _db = dbContext;
             _userManager = userManager;
@@ -93,7 +92,7 @@ namespace CoreTemp.Api.Controllers
                     else
                     {
                         _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + result.message);
-                        errorModel.Message = "1x111keyvanx11";
+                        errorModel.Message = "1x1x1farshad1x1";
                         return BadRequest(errorModel);
                     }
                 case "social"://ToDo
@@ -113,7 +112,7 @@ namespace CoreTemp.Api.Controllers
                     else
                     {
                         _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + socialresult.message);
-                        errorModel.Message = "1x111keyvanx11";
+                        errorModel.Message = "1x1x1farshad1x1";
                         return BadRequest(errorModel);
                     }
                 case "refresh_token":
@@ -132,7 +131,7 @@ namespace CoreTemp.Api.Controllers
                     else
                     {
                         _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + res.message);
-                        errorModel.Message = "0x000keyvanx00";
+                        errorModel.Message = "0x0x0farshad0x0";
                         return BadRequest(errorModel);
                     }
                 default:
@@ -175,7 +174,7 @@ namespace CoreTemp.Api.Controllers
             }
             if (code.Code == userForRegisterDto.Code)
             {
-                var userToCreate = new User
+                var userToCreate = new MyUser
                 {
                     UserName = userForRegisterDto.UserName,
                     Name = userForRegisterDto.Name,
@@ -325,7 +324,7 @@ namespace CoreTemp.Api.Controllers
         {
             var blogsFromRepo = await _db._UserRepository
                 .GetAllPagedListAsync(
-                paginationDto);
+                paginationDto,null);
 
             Response.AddPagination(blogsFromRepo.CurrentPage, blogsFromRepo.PageSize,
                 blogsFromRepo.TotalCount, blogsFromRepo.TotalPage);

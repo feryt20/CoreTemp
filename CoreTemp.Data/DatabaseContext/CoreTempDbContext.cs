@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CoreTemp.Data.DatabaseContext
 {
-    public class CoreTempDbContext : IdentityDbContext<User, Role, string,
+    public class CoreTempDbContext : IdentityDbContext<MyUser, Role, string,
     IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>,
     IdentityRoleClaim<string>, IdentityUserToken<string>>
     {

@@ -16,6 +16,7 @@ namespace CoreTemp.Data.Models.Site
         public long OrderDetailId { get; set; }
         public long OrderId { get; set; }
         public int OrderedCount { get; set; }
+        public long ProductId { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#,0 تومان}")]
         public long Price { get; set; }//قیمت هر عدد از اون کالا
@@ -25,7 +26,6 @@ namespace CoreTemp.Data.Models.Site
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#,0 تومان}")]
         public long TotalPrice { get; set; }
-        public string ProducerId { get; set; }//producerId
         public string TrackingCode { get; set; }//TrackingCode
 
 

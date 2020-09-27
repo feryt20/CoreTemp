@@ -15,5 +15,8 @@ namespace CoreTemp.Data.Models.Basket
 
         [Required]
         public string ProductId { get; set; }
+
+        [Required]
+        public int Count { get; set; }
     }
 }

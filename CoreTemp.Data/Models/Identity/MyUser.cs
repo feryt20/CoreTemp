@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CoreTemp.Data.Models.Identity
 {
-    public class User : IdentityUser
+    public class MyUser : IdentityUser
     {
 
         [Required]

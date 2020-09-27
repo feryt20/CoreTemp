@@ -11,6 +11,7 @@ namespace CoreTemp.Api.Controllers.Site
     [ApiController]
     public class IndexController : ControllerBase
     {
+        //ProductsGroups
         //Sliders
         //Products 1 & 2 & 3 index
         //Products pagination

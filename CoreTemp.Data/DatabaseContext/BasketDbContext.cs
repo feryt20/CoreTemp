@@ -22,6 +22,19 @@ namespace CoreTemp.Data.DatabaseContext
                 .UseSqlServer(@"Server=(local);Initial Catalog=CoreTempBasket;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
         }
 
+
         public DbSet<Basket> Baskets { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Basket>()
+                .HasIndex(u => u.UserId);
+
+            builder.Entity<Basket>()
+                .HasIndex(u => u.ProductId);
+        }
     }
 }

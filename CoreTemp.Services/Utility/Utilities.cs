@@ -22,11 +22,11 @@ namespace CoreTemp.Services.Utility
     {
         private readonly IConfiguration _config;
         private readonly TokenSetting _tokenSetting;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<MyUser> _userManager;
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IHttpContextAccessor _http;
         private readonly ILookupClient _lookupClient;
-        public Utilities(IUnitOfWork<CoreTempDbContext> dbContext, IConfiguration config, UserManager<User> userManager, IHttpContextAccessor http
+        public Utilities(IUnitOfWork<CoreTempDbContext> dbContext, IConfiguration config, UserManager<MyUser> userManager, IHttpContextAccessor http
             , ILookupClient lookupClient)
         {
             _http = http;
@@ -39,7 +39,7 @@ namespace CoreTemp.Services.Utility
             _lookupClient = lookupClient;
         }
 
-        public async Task<string> GenerateJwtTokenAsync(User user, bool isRemember)
+        public async Task<string> GenerateJwtTokenAsync(MyUser user, bool isRemember)
         {
             var claims = new List<Claim>
             {
@@ -117,7 +117,7 @@ namespace CoreTemp.Services.Utility
             }
         }
 
-        public async Task<TokenResponseDto> CreateAccessTokenAsync(User user, string refreshToken)
+        public async Task<TokenResponseDto> CreateAccessTokenAsync(MyUser user, string refreshToken)
         {
             double tokenExpireTime = Convert.ToDouble(_tokenSetting.ExpireTime);
 

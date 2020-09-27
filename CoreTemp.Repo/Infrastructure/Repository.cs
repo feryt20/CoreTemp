@@ -204,11 +204,15 @@ namespace CoreTemp.Repo.Infrastructure
             return PagedList<TEntity>.Create(query, paginationDto.PageNumber, paginationDto.PageSize);
         }
 
-        public async Task<PagedList<TEntity>> GetAllPagedListAsync(PaginationDto paginationDto)
+        public async Task<PagedList<TEntity>> GetAllPagedListAsync(PaginationDto paginationDto, Expression<Func<TEntity,
+            bool>> filter)
         {
             IQueryable<TEntity> query = _dbSet;
             //filter
-
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             //include
 
             //orderby

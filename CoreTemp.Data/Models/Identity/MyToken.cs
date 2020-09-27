@@ -28,6 +28,6 @@ namespace CoreTemp.Data.Models.Identity
         public string UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual MyUser User { get; set; }
     }
 }

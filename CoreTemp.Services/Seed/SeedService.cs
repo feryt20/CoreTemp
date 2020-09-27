@@ -10,9 +10,9 @@ namespace CoreTemp.Services.Seed
 {
     public class SeedService : ISeedService
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<MyUser> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        public SeedService(UserManager<User> userManager, RoleManager<Role> roleManager)
+        public SeedService(UserManager<MyUser> userManager, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -33,7 +33,7 @@ namespace CoreTemp.Services.Seed
             if (!_userManager.Users.Any())
             {
                 var userData = System.IO.File.ReadAllText("Files/Json/UserSeedData.json");
-                var users = JsonConvert.DeserializeObject<IList<User>>(userData);
+                var users = JsonConvert.DeserializeObject<IList<MyUser>>(userData);
 
                 var roles = new List<Role>
                 {

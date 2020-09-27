@@ -94,7 +94,7 @@ namespace CoreTemp.Data.Models.Site
         public virtual ICollection<PaymentUniqueNumber> PaymentUniqueNumbers { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual MyUser User { get; set; }
 
     }
 }

@@ -14,6 +14,10 @@ namespace CoreTemp.Repo.Infrastructure
         ITokenRepository _TokenRepository { get; }
         IVerificationCodeRepository _VerificationCodeRepository { get; }
 
+        IProductGroupRepository _ProductGroupRepository { get; }
+        IProductRepository _ProductRepository { get; }
+        IOrderRepository _OrderRepository { get; }
+
         IEntryRepository EntryRepository { get; }
         IFactorRepository FactorRepository { get; }
 

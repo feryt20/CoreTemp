@@ -19,4 +19,9 @@
     <ProjectReference Include="..\CoreTemp.Services\CoreTemp.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Files\Product\" />
+    <Folder Include="Files\ProductGroup\" />
+  </ItemGroup>
+
 </Project>

@@ -67,6 +67,46 @@ namespace CoreTemp.Repo.Infrastructure
                 return verificationCodeRepository;
             }
         }
+
+        private IProductGroupRepository productGroupRepository;
+        public IProductGroupRepository _ProductGroupRepository
+        {
+            get
+            {
+                if (productGroupRepository == null)
+                {
+                    productGroupRepository = new ProductGroupRepository(_db);
+                }
+                return productGroupRepository;
+            }
+        }
+
+        private IProductRepository productRepository;
+        public IProductRepository _ProductRepository
+        {
+            get
+            {
+                if (productRepository == null)
+                {
+                    productRepository = new ProductRepository(_db);
+                }
+                return productRepository;
+            }
+        }
+
+        private IOrderRepository orderRepository;
+        public IOrderRepository _OrderRepository
+        {
+            get
+            {
+                if (orderRepository == null)
+                {
+                    orderRepository = new OrderRepository(_db);
+                }
+                return orderRepository;
+            }
+        }
+
         #region methods
 
 

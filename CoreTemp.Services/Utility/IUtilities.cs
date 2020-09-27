@@ -15,10 +15,10 @@ namespace CoreTemp.Services.Utility
         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
 
         bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
-        Task<string> GenerateJwtTokenAsync(User user, bool isRemember);
+        Task<string> GenerateJwtTokenAsync(MyUser user, bool isRemember);
 
         Task<TokenResponseDto> GenerateNewTokenAsync(TokenRequestDto tokenRequestDto);
-        Task<TokenResponseDto> CreateAccessTokenAsync(User user, string refreshToken);
+        Task<TokenResponseDto> CreateAccessTokenAsync(MyUser user, string refreshToken);
         MyToken CreateRefreshToken(string clientId, string userId, bool isRemember);
 
         Task<TokenResponseDto> RefreshAccessTokenAsync(TokenRequestDto tokenRequestDto);

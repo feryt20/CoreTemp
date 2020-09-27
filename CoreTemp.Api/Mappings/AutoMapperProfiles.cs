@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using CoreTemp.Common.Common;
 using CoreTemp.Common.Helpers;
+using CoreTemp.Data.DTOs.Order;
+using CoreTemp.Data.DTOs.Product;
 using CoreTemp.Data.DTOs.User;
 using CoreTemp.Data.Models.Identity;
+using CoreTemp.Data.Models.Site;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +17,30 @@ namespace CoreTemp.Api.Mappings
     {
         public AutoMapperProfiles()
         {
-            CreateMap<User, UserForDetailedDto>();
-            CreateMap<User, UserProfileDto>()
+            CreateMap<MyUser, UserForDetailedDto>();
+            CreateMap<MyUser, UserProfileDto>()
                 .ForMember(dest => dest.Age, opt =>
                 {
                     opt.MapFrom(src => src.DateOfBirth.ToAge());
                 });
 
 
-            CreateMap<User, UserForLoginDto>();
+            CreateMap<MyUser, UserForLoginDto>();
+
+            CreateMap<ProductGroupDto,ProductGroup>();
+            CreateMap<ProductGroup,ProductGroupDto>();
+
+            CreateMap<ProductDto, Product>();
+            CreateMap<Product, ProductDto>();
+
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>();
+
+            CreateMap<OrderDetailDto, OrderDetail>();
+            CreateMap<OrderDetail, OrderDetailDto>();
+
+            CreateMap<PaymentLogDto, PaymentLog>();
+            CreateMap<PaymentLog, PaymentLogDto>();
         }
 
     }

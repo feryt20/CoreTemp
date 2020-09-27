@@ -39,7 +39,8 @@ namespace CoreTemp.Repo.Infrastructure
             Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
             string includeEntity);
-        Task<PagedList<TEntity>> GetAllPagedListAsync(PaginationDto paginationDto);
+        Task<PagedList<TEntity>> GetAllPagedListAsync(PaginationDto paginationDto, Expression<Func<TEntity,
+            bool>> filter);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where);
         Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where);
         Task<IEnumerable<TEntity>> GetManyAsyncPaging(

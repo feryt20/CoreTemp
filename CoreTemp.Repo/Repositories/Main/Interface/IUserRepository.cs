@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CoreTemp.Repo.Repositories.Main.Interface
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<MyUser>
     {
-        Task<User> GetUserByUserNameAsync(string username);
+        Task<MyUser> GetUserByUserNameAsync(string username);
         Task<bool> UserExistsAsync(string username);
     }
 }

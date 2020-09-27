@@ -10,6 +10,6 @@ namespace CoreTemp.Data.DTOs.Token
         public string refresh_token { get; set; }
         public bool status { get; set; }
         public string message { get; set; }
-        public Models.Identity.User user { get; set; }
+        public MyUser user { get; set; }
     }
 }

@@ -30,6 +30,9 @@ namespace CoreTemp.Api.Helpers.Configuration
             services.AddDbContext<LogDbContext>(opt => {
                 opt.UseSqlServer(con.GetSection("Log").Value);
             });
+            services.AddDbContext<BasketDbContext>(opt => {
+                opt.UseSqlServer(con.GetSection("Basket").Value);
+            });
         }
         public static void AddPayInitialize(this IServiceCollection services)
         {
