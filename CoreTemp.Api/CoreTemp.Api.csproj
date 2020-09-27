@@ -30,6 +30,7 @@
     <Folder Include="wwwroot\Files\ProductGroup\" />
     <Folder Include="wwwroot\Files\Product\" />
     <Folder Include="wwwroot\Files\Slider\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

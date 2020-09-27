@@ -39,22 +39,22 @@ namespace CoreTemp.Api.Helpers.Configuration
                     {
                         // Using SQL Server
                         var assemblyName = typeof(Startup).Assembly.GetName().Name;
-                        //options.ConfigureDbContext = db => db.UseSqlServer(con.GetSection("Financial").Value, sql => sql.MigrationsAssembly(assemblyName));
+                        options.ConfigureDbContext = db => db.UseSqlServer(con.GetSection("Financial").Value, sql => sql.MigrationsAssembly(assemblyName));
 
-                        //// If you prefer to have a separate MigrationHistory table for Parbad, you can change the above line to this:
-                        options.ConfigureDbContext = db => db.UseSqlServer(con.GetSection("Financial").Value, sql =>
-                        {
-                            sql.MigrationsAssembly(assemblyName);
-                            sql.MigrationsHistoryTable("ParbadHistoryTable");
-                        });
+                        ////// If you prefer to have a separate MigrationHistory table for Parbad, you can change the above line to this:
+                        //options.ConfigureDbContext = db => db.UseSqlServer(con.GetSection("Financial").Value, sql =>
+                        //{
+                        //    sql.MigrationsAssembly(assemblyName);
+                        //    sql.MigrationsHistoryTable("ParbadHistoryTable");
+                        //});
 
-                        //options.DefaultSchema = "SCHEMA NAME"; // optional
+                        //options.DefaultSchema = "ParbadSCHEMA"; // optional
 
-                        //options.PaymentTableOptions.Name = "TABLE NAME"; // optional
-                        //options.PaymentTableOptions.Schema = "SCHEMA NAME"; // optional
+                        //options.PaymentTableOptions.Name = "PaymentTABLE"; // optional
+                        //options.PaymentTableOptions.Schema = "PaymentSCHEMA"; // optional
 
-                        //options.TransactionTableOptions.Name = "TABLE NAME"; // optional
-                        //options.TransactionTableOptions.Schema = "SCHEMA NAME"; // optional
+                        //options.TransactionTableOptions.Name = "TransactionTABLE"; // optional
+                        //options.TransactionTableOptions.Schema = "TransactionSCHEMA"; // optional
                     });
                 });
             */

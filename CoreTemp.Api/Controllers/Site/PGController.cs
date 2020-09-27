@@ -123,12 +123,12 @@ namespace CoreTemp.Api.Controllers.Site
         {
             var invoice = await _onlinePayment.FetchAsync();
 
-            var factor = await _dbMain._OrderRepository.GetByIdAsync(id);
+            var order = await _dbMain._OrderRepository.GetByIdAsync(id);
 
             var verifyResult = await _onlinePayment.VerifyAsync(invoice);
             if (verifyResult.IsSucceed)
             {
-                factor.IsFinalized = true;
+                order.IsFinalized = true;
                 PaymentLog paymentLog = new PaymentLog()
                 {
                     IsSuccessful = verifyResult.IsSucceed,
@@ -139,14 +139,14 @@ namespace CoreTemp.Api.Controllers.Site
                     PaymentResponseMessage = invoice.Message
 
                 };
-                _dbMain._OrderRepository.Update(factor);
+                _dbMain._OrderRepository.Update(order);
                 await _dbMain._PaymentLogRepository.InsertAsync(paymentLog);
-                //clear Basket
-                var basketItems = await _dbBasket.MyBasketRepository.GetManyAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
-                _dbBasket.MyBasketRepository.DeleteRange(basketItems);
-
                 await _dbMain.SaveAsync();
 
+                //clear Basket
+                var basketItems = await _dbBasket.MyBasketRepository.GetManyAsync(p => p.UserId == order.UserId);
+                _dbBasket.MyBasketRepository.DeleteRange(basketItems);
+                await _dbBasket.SaveAsync();
 
                 return Redirect("https://google.com/");
             }

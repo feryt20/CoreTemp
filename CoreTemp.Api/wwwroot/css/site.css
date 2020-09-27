@@ -722,7 +722,7 @@ span.mpcancel {
     }
 
         #application div.main-error span:after {
-            background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+            background-image: url(../pngtree.png);
             background-position: -3px -288px;
             width: 34px;
             height: 34px;
@@ -735,7 +735,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application div.main-error span:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
@@ -1036,7 +1036,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .icons:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
@@ -1145,7 +1145,7 @@ span.mpcancel {
         }
 
         #application .payment_actions .jiring_box .qr-image:after, #application .payment_actions .tejarat-pay_box .qr-image:after, #application .payment_actions .ussd_box .qr-image:after {
-            background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+            background-image: url(../pngtree.png);
             background-position: -112px -246px;
             width: 25px;
             height: 25px;
@@ -1158,7 +1158,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .payment_actions .jiring_box .qr-image:after, #application .payment_actions .tejarat-pay_box .qr-image:after, #application .payment_actions .ussd_box .qr-image:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
@@ -1316,7 +1316,7 @@ span.mpcancel {
         }
 
         #application .payment_actions .auth .ussd-box .qr-code-btn {
-            background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+            background-image: url(../pngtree.png);
             background-position: -112px -246px;
             width: 25px;
             height: 25px;
@@ -1330,7 +1330,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .payment_actions .auth .ussd-box .qr-code-btn {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
@@ -1556,7 +1556,7 @@ span.mpcancel {
         }
 
     #application .payment_actions ul.payment_dropdown.cards li:after {
-        background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+        background-image: url(../pngtree.png);
         background-position: -4px -89px;
         position: absolute;
         content: "";
@@ -1696,7 +1696,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .payment_actions ul.payment_dropdown.cards li:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15) !important;
+        background-image: url(../pngtree.png) !important;
         background-size: 360px auto !important
     }
 }
@@ -1722,7 +1722,7 @@ span.mpcancel {
 
     #application .payment_actions ul.payment_dropdown > li span.arrow {
         position: absolute;
-        background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+        background-image: url(../pngtree.png);
         background-position: -80px -67px;
         width: 15px;
         height: 12px;
@@ -1866,7 +1866,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .payment_actions ul.payment_dropdown span.arrow {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15) !important;
+        background-image: url(../pngtree.png) !important;
         background-size: 360px auto !important
     }
 }
@@ -1918,7 +1918,7 @@ span.mpcancel {
             }
 
                 #application .mobile_payment_type li a.router-link-active:after, #application .new_payment_type li a.router-link-active:after {
-                    background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+                    background-image: url(../pngtree.png);
                     width: 25px;
                     height: 25px;
                     position: absolute;
@@ -1930,7 +1930,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .mobile_payment_type li a.router-link-active:after, #application .new_payment_type li a.router-link-active:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
@@ -2030,7 +2030,7 @@ span.mpcancel {
             }
 
             #application .mobile_payment_type li a:after {
-                background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+                background-image: url(../pngtree.png);
                 width: 25px;
                 height: 25px;
                 position: absolute;
@@ -2042,7 +2042,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .mobile_payment_type li a:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
@@ -2395,7 +2395,7 @@ span.mpcancel {
         height: 60px;
         display: inline-block;
         position: relative;
-        background-image: url(../images/pg_spirit.png?9c5e2fdedf2a658679a6e952723abd23);
+        background-image: url(../pngtree.png);
         overflow: hidden
     }
 
@@ -2485,7 +2485,7 @@ span.mpcancel {
 
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi) {
     #application .payment_type .type .icon:after {
-        background-image: url(../images/pg_spirit_x2.png?4d56a5b6e48d43c96cd6b480a988ff15);
+        background-image: url(../pngtree.png);
         background-size: 360px auto
     }
 }
