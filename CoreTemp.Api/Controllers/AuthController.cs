@@ -49,10 +49,7 @@ namespace CoreTemp.Api.Controllers
             _utilities = utilities;
             _smsService = smsService;
             _env = env;
-            if (string.IsNullOrWhiteSpace(_env.WebRootPath))
-            {
-                env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            }
+            
 
             errorModel = new ApiReturn<string>
             {
@@ -308,29 +305,5 @@ namespace CoreTemp.Api.Controllers
             }
         }
 
-
-        [Authorize(Policy = "RequiredUserRole")]
-        [HttpGet("users")]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _db._UserRepository.GetByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var userProfile = _mapper.Map<UserProfileDto>(users);
-            return Ok(userProfile);
-        }
-
-        [Authorize(Policy = "RequiredAdminRole")]
-        [HttpGet("page")]
-        public async Task<IActionResult> GetBlogs([FromQuery] PaginationDto paginationDto)
-        {
-            var blogsFromRepo = await _db._UserRepository
-                .GetAllPagedListAsync(
-                paginationDto,null);
-
-            Response.AddPagination(blogsFromRepo.CurrentPage, blogsFromRepo.PageSize,
-                blogsFromRepo.TotalCount, blogsFromRepo.TotalPage);
-            //MostViewed
-            return Ok(blogsFromRepo);
-
-        }
     }
 }

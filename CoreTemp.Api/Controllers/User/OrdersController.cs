@@ -20,20 +20,20 @@ using Microsoft.Extensions.Logging;
 namespace CoreTemp.Api.Controllers.User
 {
     [ApiVersion("1")]
-    [Route("api/v{v:apiVersion}/myorders")]
+    [Route("api/v{v:apiVersion}/user/orders")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1_User")]
     [Authorize(Policy = "RequiredUserRole")]
-    public class MyOrdersController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly IUnitOfWork<CoreTempDbContext> _dbMain;
         private readonly IUnitOfWork<BasketDbContext> _dbBasket;
         private readonly IMapper _mapper;
-        private readonly ILogger<MyOrdersController> _logger;
+        private readonly ILogger<OrdersController> _logger;
         private ApiReturn<string> errorModel;
 
-        public MyOrdersController(IUnitOfWork<CoreTempDbContext> dbMain, IUnitOfWork<BasketDbContext> dbBasket,
-            IMapper mapper, ILogger<MyOrdersController> logger)
+        public OrdersController(IUnitOfWork<CoreTempDbContext> dbMain, IUnitOfWork<BasketDbContext> dbBasket,
+            IMapper mapper, ILogger<OrdersController> logger)
         {
             _dbMain = dbMain;
             _mapper = mapper;
@@ -69,6 +69,7 @@ namespace CoreTemp.Api.Controllers.User
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -91,6 +92,7 @@ namespace CoreTemp.Api.Controllers.User
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -149,6 +151,7 @@ namespace CoreTemp.Api.Controllers.User
             
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در ثبت سفارش";
             return BadRequest(errorModel);
         }
 

@@ -67,6 +67,7 @@ namespace CoreTemp.Api.Controllers.Site
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -90,6 +91,7 @@ namespace CoreTemp.Api.Controllers.Site
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -112,6 +114,7 @@ namespace CoreTemp.Api.Controllers.Site
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -132,6 +135,7 @@ namespace CoreTemp.Api.Controllers.Site
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 

@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 namespace CoreTemp.Api.Controllers.Admin
 {
     [ApiVersion("1")]
-    [Route("api/v{v:apiVersion}/orders")]
+    [Route("api/v{v:apiVersion}/admin/orders")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1_Admin")]
     [Authorize(Policy = "RequiredAdminRole")]
@@ -66,6 +66,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -88,6 +89,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 

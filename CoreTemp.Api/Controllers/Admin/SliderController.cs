@@ -21,7 +21,7 @@ using Microsoft.Extensions.Logging;
 namespace CoreTemp.Api.Controllers.Admin
 {
     [ApiVersion("1")]
-    [Route("api/v{v:apiVersion}/slider")]
+    [Route("api/v{v:apiVersion}/admin/slider")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1_Admin")]
     [Authorize(Policy = "RequiredAdminRole")]
@@ -72,6 +72,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -94,6 +95,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -145,6 +147,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در افزودن";
             return BadRequest(errorModel);
         }
 
@@ -197,6 +200,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در ویرایش";
             return BadRequest(errorModel);
         }
 
@@ -221,6 +225,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در حذف";
             return BadRequest(errorModel);
         }
 

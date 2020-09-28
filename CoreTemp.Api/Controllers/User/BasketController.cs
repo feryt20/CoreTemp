@@ -13,12 +13,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace CoreTemp.Api.Controllers.Site
+namespace CoreTemp.Api.Controllers.User
 {
     [ApiVersion("1")]
-    [Route("api/v{v:apiVersion}/basket")]
+    [Route("api/v{v:apiVersion}/user/basket")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v1_Site")]
+    [ApiExplorerSettings(GroupName = "v1_User")]
     [Authorize(Policy = "RequiredUserRole")]
     public class BasketController : ControllerBase
     {
@@ -62,6 +62,7 @@ namespace CoreTemp.Api.Controllers.Site
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -120,12 +121,13 @@ namespace CoreTemp.Api.Controllers.Site
             if (await _dbBasket.SaveAsync() > 0)
             {
                 model.Message = "Success";
-                model.Result = "سبد خرید به روزرسانی شد";
+                model.Result = "سبد خرید به روز رسانی شد";
 
                 return Ok(model);
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در به روز رسانی";
             return BadRequest(errorModel);
         }
 
@@ -150,6 +152,7 @@ namespace CoreTemp.Api.Controllers.Site
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در حذف";
             return BadRequest(errorModel);
         }
     }

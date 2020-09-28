@@ -74,6 +74,7 @@ namespace CoreTemp.Api.Controllers.User
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در دریافت";
             return BadRequest(errorModel);
         }
 
@@ -140,6 +141,7 @@ namespace CoreTemp.Api.Controllers.User
             }
 
             errorModel.Message = "Error";
+            errorModel.Result = "خطا در ویرایش";
             return BadRequest(errorModel);
         }
 
