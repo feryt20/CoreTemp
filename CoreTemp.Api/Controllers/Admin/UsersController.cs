@@ -81,7 +81,7 @@ namespace CoreTemp.Api.Controllers.Admin
         }
 
 
-        [HttpGet("get")]
+        [HttpGet("get/{id}")]
         [ProducesResponseType(typeof(ApiReturn<UserProfileDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(string id)

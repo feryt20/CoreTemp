@@ -24,9 +24,6 @@ namespace CoreTemp.Api.Helpers.Configuration
             services.AddDbContext<CoreTempDbContext>(opt => {
                 opt.UseSqlServer(con.GetSection("Main").Value);
             });
-            services.AddDbContext<FinantialDbContext>(opt => {
-                opt.UseSqlServer(con.GetSection("Financial").Value);
-            });
             services.AddDbContext<LogDbContext>(opt => {
                 opt.UseSqlServer(con.GetSection("Log").Value);
             });

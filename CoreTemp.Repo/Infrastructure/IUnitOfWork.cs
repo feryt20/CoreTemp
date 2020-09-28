@@ -1,5 +1,4 @@
 ﻿using CoreTemp.Repo.Repositories.Basket.Interface;
-using CoreTemp.Repo.Repositories.Financial.Interface;
 using CoreTemp.Repo.Repositories.Main.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,9 +20,6 @@ namespace CoreTemp.Repo.Infrastructure
         IOrderDetailRepository _OrderDetailRepository { get; }
         IPaymentLogRepository _PaymentLogRepository { get; }
         ISliderRepository _SliderRepository { get; }
-
-        IEntryRepository EntryRepository { get; }
-        IFactorRepository FactorRepository { get; }
 
         IMyBasketRepository MyBasketRepository { get; }
 

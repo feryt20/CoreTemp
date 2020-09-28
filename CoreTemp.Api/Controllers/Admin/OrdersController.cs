@@ -70,7 +70,7 @@ namespace CoreTemp.Api.Controllers.Admin
             return BadRequest(errorModel);
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/{id}")]
         [ProducesResponseType(typeof(ApiReturn<OrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int id)

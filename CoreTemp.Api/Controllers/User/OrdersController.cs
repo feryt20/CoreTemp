@@ -73,14 +73,14 @@ namespace CoreTemp.Api.Controllers.User
             return BadRequest(errorModel);
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/{oid}")]
         [ProducesResponseType(typeof(ApiReturn<OrderDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int oid)
         {
             ApiReturn<OrderDto> model = new ApiReturn<OrderDto> { Status = true };
 
-            var order = await _dbMain._OrderRepository.GetAllAsync(p => p.OrderId == id && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) && !p.IsDeleted, orderBy: o => o.OrderBy(p => p.OrderId), "OrderDetails,User,PaymentLogs");
+            var order = await _dbMain._OrderRepository.GetAllAsync(p => p.OrderId == oid && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) && !p.IsDeleted, orderBy: o => o.OrderBy(p => p.OrderId), "OrderDetails,User,PaymentLogs");
 
             if (order != null)
             {

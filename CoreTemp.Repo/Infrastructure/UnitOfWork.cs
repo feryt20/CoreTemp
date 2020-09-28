@@ -1,8 +1,6 @@
 ﻿using CoreTemp.Common.Helpers;
 using CoreTemp.Repo.Repositories.Basket.Interface;
 using CoreTemp.Repo.Repositories.Basket.Repository;
-using CoreTemp.Repo.Repositories.Financial.Interface;
-using CoreTemp.Repo.Repositories.Financial.Repository;
 using CoreTemp.Repo.Repositories.Main.Interface;
 using CoreTemp.Repo.Repositories.Main.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -167,32 +165,7 @@ namespace CoreTemp.Repo.Infrastructure
             }
         }
 
-        #region privateFinancialrepository
-        private IEntryRepository entryRepository;
-        public IEntryRepository EntryRepository
-        {
-            get
-            {
-                if (entryRepository == null)
-                {
-                    entryRepository = new EntryRepository(_db);
-                }
-                return entryRepository;
-            }
-        }
-        private IFactorRepository factorRepository;
-        public IFactorRepository FactorRepository
-        {
-            get
-            {
-                if (factorRepository == null)
-                {
-                    factorRepository = new FactorRepository(_db);
-                }
-                return factorRepository;
-            }
-        }
-        #endregion
+        
 
         #region methods
 

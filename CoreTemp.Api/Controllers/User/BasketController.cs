@@ -66,7 +66,7 @@ namespace CoreTemp.Api.Controllers.User
             return BadRequest(errorModel);
         }
 
-        [HttpPut("add")]
+        [HttpPut("add/{pid}")]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add(long pid)
@@ -132,13 +132,13 @@ namespace CoreTemp.Api.Controllers.User
         }
 
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{pid}")]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(long pid)
         {
             ApiReturn<string> model = new ApiReturn<string> { Status = true };
-            var pg = await _dbBasket.MyBasketRepository.GetByIdAsync(id);
+            var pg = await _dbBasket.MyBasketRepository.GetByIdAsync(pid);
             if (pg != null)
             {
                 _dbBasket.MyBasketRepository.Delete(pg);

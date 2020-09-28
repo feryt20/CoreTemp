@@ -48,6 +48,7 @@ namespace CoreTemp.Api.Controllers.Site
         }
 
         [HttpGet("list")]
+        //[ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<PagedList<Product>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> List([FromQuery] PaginationDto paginationDto)
@@ -71,7 +72,8 @@ namespace CoreTemp.Api.Controllers.Site
             return BadRequest(errorModel);
         }
 
-        [HttpGet("listByGroup")]
+        [HttpGet("{group}/listByGroup")]
+        //[ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<PagedList<Product>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListByGroup(int group,[FromQuery] PaginationDto paginationDto)
@@ -95,7 +97,8 @@ namespace CoreTemp.Api.Controllers.Site
             return BadRequest(errorModel);
         }
 
-        [HttpGet("product")]
+        [HttpGet("product/{id}")]
+        //[ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<ProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Product(int id)
@@ -119,6 +122,7 @@ namespace CoreTemp.Api.Controllers.Site
         }
 
         [HttpGet("group")]
+        [ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<IEnumerable<ProductGroup>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Group()

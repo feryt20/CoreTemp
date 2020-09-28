@@ -74,7 +74,7 @@ namespace CoreTemp.Api.Controllers.Admin
             return BadRequest(errorModel);
         }
 
-        [HttpGet("get")]
+        [HttpGet("get/{id}")]
         [ProducesResponseType(typeof(ApiReturn<ProductGroupDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int id)
@@ -203,7 +203,7 @@ namespace CoreTemp.Api.Controllers.Admin
             return BadRequest(errorModel);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
