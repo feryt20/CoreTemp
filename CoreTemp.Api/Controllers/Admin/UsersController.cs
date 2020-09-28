@@ -32,17 +32,15 @@ namespace CoreTemp.Api.Controllers.Admin
         private readonly UserManager<MyUser> _userManager;
         private readonly IUploadService _uploadService;
         private readonly IMapper _mapper;
-        private readonly ILogger<UsersController> _logger;
         private readonly IWebHostEnvironment _env;
         private ApiReturn<string> errorModel;
 
 
         public UsersController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<MyUser> userManager
-            , IMapper mapper,ILogger<UsersController> logger, IUploadService uploadService, IWebHostEnvironment env)
+            , IMapper mapper, IUploadService uploadService, IWebHostEnvironment env)
         {
             _db = dbContext;
             _mapper = mapper;
-            _logger = logger;
             _userManager = userManager;
             _uploadService = uploadService;
             _env = env;

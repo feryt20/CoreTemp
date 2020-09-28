@@ -27,15 +27,13 @@ namespace CoreTemp.Api.Controllers.Admin
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IMapper _mapper;
-        private readonly ILogger<OrdersController> _logger;
         private ApiReturn<string> errorModel;
 
         public OrdersController(IUnitOfWork<CoreTempDbContext> dbContext,
-            IMapper mapper, ILogger<OrdersController> logger)
+            IMapper mapper)
         {
             _db = dbContext;
             _mapper = mapper;
-            _logger = logger;
 
             errorModel = new ApiReturn<string>
             {

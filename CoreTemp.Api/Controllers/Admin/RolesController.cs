@@ -23,16 +23,13 @@ namespace CoreTemp.Api.Controllers.Admin
     public class RolesController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ILogger<RolesController> _logger;
         private readonly UserManager<MyUser> _userManager;
         private ApiReturn<string> errorModel;
 
 
-        public RolesController(IMapper mapper,
-            ILogger<RolesController> logger, UserManager<MyUser> userManager)
+        public RolesController(IMapper mapper, UserManager<MyUser> userManager)
         {
             _mapper = mapper;
-            _logger = logger;
             _userManager = userManager;
 
             errorModel = new ApiReturn<string>

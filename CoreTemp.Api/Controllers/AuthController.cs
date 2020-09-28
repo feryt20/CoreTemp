@@ -33,19 +33,20 @@ namespace CoreTemp.Api.Controllers
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly UserManager<MyUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
+        //private readonly ILogger<AuthController> _logger;
         private readonly IUtilities _utilities;
         private readonly IWebHostEnvironment _env;
         private readonly ISmsService _smsService;
         private ApiReturn<string> errorModel;
         public AuthController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<MyUser> userManager,
-             IMapper mapper, ILogger<AuthController> logger, IUtilities utilities, ISmsService smsService,
-            IWebHostEnvironment env)
+             IMapper mapper, IUtilities utilities, ISmsService smsService, IWebHostEnvironment env
+             //ILogger<AuthController> logger
+            )
         {
             _db = dbContext;
             _userManager = userManager;
             _mapper = mapper;
-            _logger = logger;
+            //_logger = logger;
             _utilities = utilities;
             _smsService = smsService;
             _env = env;
@@ -88,7 +89,7 @@ namespace CoreTemp.Api.Controllers
                     }
                     else
                     {
-                        _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + result.message);
+                        //_logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + result.message);
                         errorModel.Message = "1x1x1farshad1x1";
                         return BadRequest(errorModel);
                     }
@@ -108,7 +109,7 @@ namespace CoreTemp.Api.Controllers
                     }
                     else
                     {
-                        _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + socialresult.message);
+                        //_logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + socialresult.message);
                         errorModel.Message = "1x1x1farshad1x1";
                         return BadRequest(errorModel);
                     }
@@ -127,7 +128,7 @@ namespace CoreTemp.Api.Controllers
                     }
                     else
                     {
-                        _logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + res.message);
+                        //_logger.LogWarning($"{tokenRequestDto.UserName} درخواست لاگین ناموفق داشته است" + "---" + res.message);
                         errorModel.Message = "0x0x0farshad0x0";
                         return BadRequest(errorModel);
                     }
@@ -193,7 +194,7 @@ namespace CoreTemp.Api.Controllers
 
                     var userForReturn = _mapper.Map<UserForDetailedDto>(userToCreate);
                     //log
-                    _logger.LogInformation($"{userForRegisterDto.UserName} ثبت نام کرده است");
+                    //_logger.LogInformation($"{userForRegisterDto.UserName} ثبت نام کرده است");
                     //
                     model.Message = "ثبت نام شما با موفقیت انجام شد";
                     model.Result = userForReturn;
@@ -202,7 +203,7 @@ namespace CoreTemp.Api.Controllers
                 else if (result.Errors.Any())
                 {
                     //log
-                    _logger.LogWarning(result.Errors.First().Description);
+                    //_logger.LogWarning(result.Errors.First().Description);
                     //
                     errorModel.Message = result.Errors.First().Description;
                     return BadRequest(errorModel);

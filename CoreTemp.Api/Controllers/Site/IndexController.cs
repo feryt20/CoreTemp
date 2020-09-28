@@ -29,15 +29,13 @@ namespace CoreTemp.Api.Controllers.Site
 
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IMapper _mapper;
-        private readonly ILogger<IndexController> _logger;
         private ApiReturn<string> errorModel;
 
         public IndexController(IUnitOfWork<CoreTempDbContext> dbContext,
-            IMapper mapper, ILogger<IndexController> logger)
+            IMapper mapper)
         {
             _db = dbContext;
             _mapper = mapper;
-            _logger = logger;
 
             errorModel = new ApiReturn<string>
             {

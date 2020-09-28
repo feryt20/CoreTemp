@@ -2,6 +2,7 @@
 using CoreTemp.Services.Seed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -60,7 +61,7 @@ namespace CoreTemp.Api.Helpers.Configuration
              .AddCors(opt =>
              {
                  opt.AddPolicy("CorsPolicy", builder =>
-                 builder.WithOrigins("https://localhost:44345", "http://localhost:65444")
+                 builder.WithOrigins("https://qazvinbuy.ir", "https://localhost:44345", "http://localhost:65444", "http://localhost:4200")
                          .AllowAnyMethod()
                          .AllowAnyHeader()
                          .AllowCredentials());
@@ -79,6 +80,11 @@ namespace CoreTemp.Api.Helpers.Configuration
                 opt.Preload = true;
             });
 
+            services.AddHttpsRedirection(opt =>
+            {
+                opt.RedirectStatusCode = StatusCodes.Status301MovedPermanently;
+            });
+
 
             services.AddResponseCaching();
             services.AddResponseCompression(opt => opt.Providers.Add<GzipCompressionProvider>());
@@ -94,23 +100,23 @@ namespace CoreTemp.Api.Helpers.Configuration
             seeder.SeedUsers();
             app.UseRouting();
 
-            // app.UseCsp(opt => opt
-            //.StyleSources(s => s.Self()
-            //.UnsafeInline().CustomSources("pay.madpay724.ir", "api.madpay724.ir", "fonts.googleapis.com"))
-            //.ScriptSources(s => s.Self()
-            //.UnsafeInline().UnsafeEval().CustomSources("pay.madpay724.ir", "api.madpay724.ir", "apis.google.com", "connect.facebook.net"))
-            //.ImageSources(s => s.Self()
-            //.CustomSources("pay.madpay724.ir", "api.madpay724.ir", "res.cloudinary.com", "cloudinary.com", "data:"))
-            //.MediaSources(s => s.Self()
-            //.CustomSources("pay.madpay724.ir", "api.madpay724.ir", "res.cloudinary.com", "cloudinary.com", "data:"))
-            //.FontSources(s => s.Self()
-            //.CustomSources("fonts.gstatic.com", "data:"))
-            //.FrameSources(s => s.Self()
-            //.CustomSources("accounts.google.com"))
-            //);
+            app.UseCsp(opt => opt
+           .StyleSources(s => s.Self()
+           .UnsafeInline().CustomSources("qazvinbuy.ir", "fonts.googleapis.com"))
+           .ScriptSources(s => s.Self()
+           .UnsafeInline().UnsafeEval().CustomSources("qazvinbuy.ir", "apis.google.com"))
+           .ImageSources(s => s.Self()
+           .CustomSources("qazvinbuy.ir", "res.cloudinary.com", "data:"))
+           .MediaSources(s => s.Self()
+           .CustomSources("qazvinbuy.ir", "res.cloudinary.com", "cloudinary.com", "data:"))
+           .FontSources(s => s.Self()
+           .CustomSources("fonts.gstatic.com", "data:"))
+           .FrameSources(s => s.Self()
+           .CustomSources("accounts.google.com"))
+           );
 
 
-            // app.UseXfo(o => o.Deny());
+            app.UseXfo(o => o.Deny());
         }
 
         public static void UsePayInitializeInProduction(this IApplicationBuilder app)

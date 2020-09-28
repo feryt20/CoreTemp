@@ -29,17 +29,15 @@ namespace CoreTemp.Api.Controllers.Admin
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IMapper _mapper;
-        private readonly ILogger<ProductsController> _logger;
         private readonly IUploadService _uploadService;
         private readonly IWebHostEnvironment _env;
         private ApiReturn<string> errorModel;
 
         public ProductsController(IUnitOfWork<CoreTempDbContext> dbContext, IUploadService uploadService,
-             IMapper mapper, ILogger<ProductsController> logger, IWebHostEnvironment env)
+             IMapper mapper, IWebHostEnvironment env)
         {
             _db = dbContext;
             _mapper = mapper;
-            _logger = logger;
             _uploadService = uploadService;
             _env = env;
 

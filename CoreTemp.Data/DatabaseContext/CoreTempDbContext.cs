@@ -21,11 +21,11 @@ namespace CoreTemp.Data.DatabaseContext
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(local);Initial Catalog=CoreTempMain;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
-            //optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Server=(local);Initial Catalog=CoreTempMain;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=(local);Initial Catalog=CoreTempMain;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
+        //    //optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Server=(local);Initial Catalog=CoreTempMain;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
+        //}
 
         public DbSet<MyToken> MyTokens { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }

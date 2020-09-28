@@ -29,16 +29,14 @@ namespace CoreTemp.Api.Controllers.User
         private readonly IUnitOfWork<CoreTempDbContext> _dbMain;
         private readonly IUnitOfWork<BasketDbContext> _dbBasket;
         private readonly IMapper _mapper;
-        private readonly ILogger<OrdersController> _logger;
         private ApiReturn<string> errorModel;
 
         public OrdersController(IUnitOfWork<CoreTempDbContext> dbMain, IUnitOfWork<BasketDbContext> dbBasket,
-            IMapper mapper, ILogger<OrdersController> logger)
+            IMapper mapper)
         {
             _dbMain = dbMain;
             _mapper = mapper;
             _dbBasket = dbBasket;
-            _logger = logger;
 
             errorModel = new ApiReturn<string>
             {

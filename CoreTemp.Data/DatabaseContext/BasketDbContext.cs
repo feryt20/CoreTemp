@@ -16,11 +16,11 @@ namespace CoreTemp.Data.DatabaseContext
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
-        {
-            optionBuilder
-                .UseSqlServer(@"Server=(local);Initial Catalog=CoreTempBasket;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        //{
+        //    optionBuilder
+        //        .UseSqlServer(@"Server=(local);Initial Catalog=CoreTempBasket;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
+        //}
 
 
         public DbSet<MyBasket> Baskets { get; set; }

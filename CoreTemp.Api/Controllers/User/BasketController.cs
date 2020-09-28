@@ -25,16 +25,14 @@ namespace CoreTemp.Api.Controllers.User
         private readonly IUnitOfWork<CoreTempDbContext> _dbMain;
         private readonly IUnitOfWork<BasketDbContext> _dbBasket;
         private readonly IMapper _mapper;
-        private readonly ILogger<BasketController> _logger;
         private ApiReturn<string> errorModel;
 
         public BasketController(IUnitOfWork<CoreTempDbContext> dbMain, IUnitOfWork<BasketDbContext> dbBasket,
-            IMapper mapper, ILogger<BasketController> logger)
+            IMapper mapper)
         {
             _dbMain = dbMain;
             _dbBasket = dbBasket;
             _mapper = mapper;
-            _logger = logger;
 
             errorModel = new ApiReturn<string>
             {

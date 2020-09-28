@@ -30,19 +30,17 @@ namespace CoreTemp.Api.Controllers.User
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly UserManager<MyUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly ILogger<ProfileController> _logger;
         private readonly IUploadService _uploadService;
         private readonly IWebHostEnvironment _env;
         private ApiReturn<string> errorModel;
 
         public ProfileController(IUnitOfWork<CoreTempDbContext> dbContext, UserManager<MyUser> userManager,
-            IMapper mapper, ILogger<ProfileController> logger, IUploadService uploadService,
+            IMapper mapper, IUploadService uploadService,
             IWebHostEnvironment env)
         {
             _db = dbContext;
             _userManager = userManager;
             _mapper = mapper;
-            _logger = logger;
             _uploadService = uploadService;
             _env = env;
 

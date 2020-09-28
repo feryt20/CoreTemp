@@ -20,15 +20,13 @@ namespace CoreTemp.Api.Controllers.Site
     {
         private readonly IUnitOfWork<CoreTempDbContext> _dbMain;
         private readonly IUnitOfWork<BasketDbContext> _dbBasket;
-        private readonly ILogger<PGController> _logger;
         private readonly IOnlinePayment _onlinePayment;
         private ApiReturn<string> errorModel;
         public PGController(IUnitOfWork<CoreTempDbContext> dbMain, IUnitOfWork<BasketDbContext> dbBasket,
-            ILogger<PGController> logger, IOnlinePayment onlinePayment)
+             IOnlinePayment onlinePayment)
         {
             _dbMain = dbMain;
             _dbBasket = dbBasket;
-            _logger = logger;
             _onlinePayment = onlinePayment;
 
             errorModel = new ApiReturn<string>

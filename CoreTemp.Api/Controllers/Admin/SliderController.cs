@@ -29,18 +29,15 @@ namespace CoreTemp.Api.Controllers.Admin
     {
         private readonly IUnitOfWork<CoreTempDbContext> _db;
         private readonly IMapper _mapper;
-        private readonly ILogger<SliderController> _logger;
         private readonly IUploadService _uploadService;
         private readonly IWebHostEnvironment _env;
         private ApiReturn<string> errorModel;
 
-        public SliderController(IUnitOfWork<CoreTempDbContext> dbContext,
-            IMapper mapper, ILogger<SliderController> logger, 
+        public SliderController(IUnitOfWork<CoreTempDbContext> dbContext,IMapper mapper,
             IUploadService uploadService, IWebHostEnvironment env)
         {
             _db = dbContext;
             _mapper = mapper;
-            _logger = logger;
             _uploadService = uploadService;
             _env = env;
 

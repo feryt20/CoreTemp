@@ -17,12 +17,12 @@ namespace CoreTemp.Data.DatabaseContext
         {
 
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
-        {
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        //{
 
-            optionBuilder
-                .UseSqlServer("Server=(local);Initial Catalog=CoreTempLog;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
-        }
+        //    optionBuilder
+        //        .UseSqlServer("Server=(local);Initial Catalog=CoreTempLog;User Id=sa;Password=fery;Integrated Security=True;MultipleActiveResultSets=True;");
+        //}
 
         public DbSet<ExtendedLog> Logs { get; set; }
 
