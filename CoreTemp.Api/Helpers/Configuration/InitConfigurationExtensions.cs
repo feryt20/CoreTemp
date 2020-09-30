@@ -61,7 +61,7 @@ namespace CoreTemp.Api.Helpers.Configuration
              .AddCors(opt =>
              {
                  opt.AddPolicy("CorsPolicy", builder =>
-                 builder.WithOrigins("https://qazvinbuy.ir", "https://localhost:44345", "http://localhost:65444", "http://localhost:4200")
+                 builder.WithOrigins("https://marketqazvin.ir", "https://localhost:44345", "http://localhost:65444", "http://localhost:4200")
                          .AllowAnyMethod()
                          .AllowAnyHeader()
                          .AllowCredentials());
@@ -102,13 +102,13 @@ namespace CoreTemp.Api.Helpers.Configuration
 
             app.UseCsp(opt => opt
            .StyleSources(s => s.Self()
-           .UnsafeInline().CustomSources("qazvinbuy.ir", "fonts.googleapis.com"))
+           .UnsafeInline().CustomSources("marketqazvin.ir", "fonts.googleapis.com"))
            .ScriptSources(s => s.Self()
-           .UnsafeInline().UnsafeEval().CustomSources("qazvinbuy.ir", "apis.google.com"))
+           .UnsafeInline().UnsafeEval().CustomSources("marketqazvin.ir", "apis.google.com"))
            .ImageSources(s => s.Self()
-           .CustomSources("qazvinbuy.ir", "res.cloudinary.com", "data:"))
+           .CustomSources("marketqazvin.ir", "res.cloudinary.com", "data:"))
            .MediaSources(s => s.Self()
-           .CustomSources("qazvinbuy.ir", "res.cloudinary.com", "cloudinary.com", "data:"))
+           .CustomSources("marketqazvin.ir", "res.cloudinary.com", "cloudinary.com", "data:"))
            .FontSources(s => s.Self()
            .CustomSources("fonts.gstatic.com", "data:"))
            .FrameSources(s => s.Self()

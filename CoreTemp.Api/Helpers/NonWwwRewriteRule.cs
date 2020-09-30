@@ -18,7 +18,7 @@ namespace CoreTemp.Api.Helpers
             var response = context.HttpContext.Response;
             if (string.IsNullOrEmpty(path) || path == "/")
             {
-                string redirectUrl = "https://qazvinbuy.ir";
+                string redirectUrl = "https://marketqazvin.ir";
                 response.Headers[HeaderNames.Location] = redirectUrl;
                 response.StatusCode = StatusCodes.Status301MovedPermanently;
                 context.Result = RuleResult.EndResponse;

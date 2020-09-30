@@ -54,9 +54,9 @@ namespace CoreTemp.Api
                 RequestPath = new PathString("/wwwroot")
             });
 
-            var rewriteOptions = new RewriteOptions();
-            rewriteOptions.Rules.Add(new NonWwwRewriteRule());
-            app.UseRewriter(rewriteOptions);
+            //var rewriteOptions = new RewriteOptions();
+            //rewriteOptions.Rules.Add(new NonWwwRewriteRule());
+            //app.UseRewriter(rewriteOptions);
 
             app.UseEndpoints(endpoints =>
             {

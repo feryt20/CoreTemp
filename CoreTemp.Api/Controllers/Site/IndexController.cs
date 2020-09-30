@@ -45,11 +45,11 @@ namespace CoreTemp.Api.Controllers.Site
             };
         }
 
-        [HttpGet("list")]
+        [HttpGet("products")]
         //[ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<PagedList<Product>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> List([FromQuery] PaginationDto paginationDto)
+        public async Task<IActionResult> Products([FromQuery] PaginationDto paginationDto)
         {
             ApiReturn<PagedList<Product>> model = new ApiReturn<PagedList<Product>> { Status = true };
 
@@ -70,11 +70,11 @@ namespace CoreTemp.Api.Controllers.Site
             return BadRequest(errorModel);
         }
 
-        [HttpGet("{group}/listByGroup")]
+        [HttpGet("{group}/products")]
         //[ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<PagedList<Product>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ListByGroup(int group,[FromQuery] PaginationDto paginationDto)
+        public async Task<IActionResult> Products(int group,[FromQuery] PaginationDto paginationDto)
         {
             ApiReturn<PagedList<Product>> model = new ApiReturn<PagedList<Product>> { Status = true };
 
@@ -119,11 +119,11 @@ namespace CoreTemp.Api.Controllers.Site
             return BadRequest(errorModel);
         }
 
-        [HttpGet("group")]
+        [HttpGet("groups")]
         [ResponseCache(Duration = 600)]
         [ProducesResponseType(typeof(ApiReturn<IEnumerable<ProductGroup>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiReturn<string>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Group()
+        public async Task<IActionResult> Groups()
         {
             ApiReturn<IEnumerable<ProductGroup>> model = new ApiReturn<IEnumerable<ProductGroup>> { Status = true };
 
