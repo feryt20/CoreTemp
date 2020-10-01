@@ -138,11 +138,11 @@ namespace CoreTemp.Api.Controllers.Site
 
                 };
                 _dbMain._OrderRepository.Update(order);
-                await _dbMain._PaymentLogRepository.InsertAsync(paymentLog);
+                await _dbMain._PaymentLogRepository.AddAsync(paymentLog);
                 await _dbMain.SaveAsync();
 
                 //clear Basket
-                var basketItems = await _dbBasket.MyBasketRepository.GetManyAsync(p => p.UserId == order.UserId);
+                var basketItems = await _dbBasket.MyBasketRepository.GetAllAsync(p => p.UserId == order.UserId,null);
                 _dbBasket.MyBasketRepository.DeleteRange(basketItems);
                 await _dbBasket.SaveAsync();
 
@@ -160,7 +160,7 @@ namespace CoreTemp.Api.Controllers.Site
                     PaymentResponseMessage = invoice.Message
 
                 };
-                await _dbMain._PaymentLogRepository.InsertAsync(paymentLog);
+                await _dbMain._PaymentLogRepository.AddAsync(paymentLog);
                 await _dbMain.SaveAsync();
                 return Redirect("https://google.com/");
             }

@@ -81,7 +81,7 @@ namespace CoreTemp.Api.Controllers.Admin
         {
             ApiReturn<ProductDto> model = new ApiReturn<ProductDto> { Status = true };
 
-            var pg = await _db._ProductRepository.GetAsync(p => p.ProductId == id && !p.IsDeleted);
+            var pg = await _db._ProductRepository.GetFirstOrDefaultAsync(p => p.ProductId == id && !p.IsDeleted);
 
             if (pg != null)
             {
@@ -135,7 +135,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             var pg = _mapper.Map<Product>(productDto);
-            await _db._ProductRepository.InsertAsync(pg);
+            await _db._ProductRepository.AddAsync(pg);
 
             if (await _db.SaveAsync() > 0)
             {

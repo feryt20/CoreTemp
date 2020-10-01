@@ -103,7 +103,7 @@ namespace CoreTemp.Api.Controllers.Site
         {
             ApiReturn<ProductDto> model = new ApiReturn<ProductDto> { Status = true };
 
-            var pg = await _db._ProductRepository.GetAsync(p => p.ProductId == id && !p.IsDeleted);
+            var pg = await _db._ProductRepository.GetFirstOrDefaultAsync(p => p.ProductId == id && !p.IsDeleted);
 
             if (pg != null)
             {

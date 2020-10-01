@@ -20,7 +20,7 @@ namespace CoreTemp.Repo.Repositories.Main.Repository
 
         public async Task<MyUser> GetUserByUserNameAsync(string username)
         {
-            return await GetAsync(p => p.UserName.Equals(username.ToLower()));
+            return await GetFirstOrDefaultAsync(p => p.UserName.Equals(username.ToLower()),null);
         }
 
         public async Task<bool> UserExistsAsync(string username)

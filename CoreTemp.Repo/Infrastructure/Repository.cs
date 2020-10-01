@@ -22,13 +22,23 @@ namespace CoreTemp.Repo.Infrastructure
 
 
         #region normal
-        public int Count()
+        public int Count(Expression<Func<TEntity, bool>> where = null)
         {
-            return _dbSet.Count();
+            IQueryable<TEntity> query = _dbSet;
+            if (where != null)
+                query = query.Where(where);
+
+            return query.Count();
         }
-        public void Insert(TEntity entity)
+        public void Add(TEntity entity)
         {
             _dbSet.Add(entity);
+        }
+        public  void AddRange(List<TEntity> entities)
+        {
+            if (entities == null)
+                throw new ArgumentException("nulll");
+             _dbSet.AddRange(entities);
         }
         public void Update(TEntity entity)
         {
@@ -50,13 +60,6 @@ namespace CoreTemp.Repo.Infrastructure
                 throw new ArgumentException("nulll");
             _dbSet.Remove(entity);
         }
-
-        public void DeleteRange(IEnumerable<TEntity> entities)
-        {
-            if (entities == null)
-                throw new ArgumentException("nulll");
-            _dbSet.RemoveRange(entities);
-        }
         public void Delete(Expression<Func<TEntity, bool>> where)
         {
             IEnumerable<TEntity> obj = _dbSet.Where(where).AsEnumerable();
@@ -65,29 +68,66 @@ namespace CoreTemp.Repo.Infrastructure
                 _dbSet.Remove(item);
             }
         }
-        
+        public void DeleteRange(IEnumerable<TEntity> entities)
+        {
+            if (entities == null)
+                throw new ArgumentException("nulll");
+            _dbSet.RemoveRange(entities);
+        }
         public TEntity GetById(object id)
         {
             return _dbSet.Find(id);
         }
-        public IEnumerable<TEntity> GetAll()
+        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> where = null, params Expression<Func<TEntity, object>>[] includes)
         {
-            return _dbSet.AsEnumerable();
-        }
-        public IEnumerable<TEntity> GetAll(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeEntity = "")
-        {
-            //return _dbSet.Where(where).FirstOrDefault();
             IQueryable<TEntity> query = _dbSet;
-            if (filter != null)
+
+            if (includes != null)
             {
-                query = query.Where(filter);
+                foreach (Expression<Func<TEntity, object>> include in includes)
+                    query = query.Include(include);
             }
-            foreach (var include in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+
+            return query.FirstOrDefault(where);
+        }
+        public TEntity GetAsNoTracking(Expression<Func<TEntity, bool>> where = null)
+        {
+            return _dbSet.AsNoTracking().FirstOrDefault(where);
+        }
+
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = _dbSet;
+
+            if (includes != null)
             {
-                query = query.Include(include);
+                foreach (Expression<Func<TEntity, object>> include in includes)
+                    query = query.Include(include);
+            }
+
+            if (where != null)
+                query = query.Where(where);
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            return query.ToList();
+        }
+
+        public IEnumerable<TEntity> GetAll(
+            Expression<Func<TEntity, bool>> where = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+             params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = _dbSet;
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+            if (includes != null)
+            {
+                foreach (Expression<Func<TEntity, object>> include in includes)
+                    query = query.Include(include);
             }
             if (orderBy != null)
             {
@@ -98,32 +138,66 @@ namespace CoreTemp.Repo.Infrastructure
                 return query.ToList();
             }
         }
-        public TEntity Get(Expression<Func<TEntity, bool>> where)
+
+        public PagedList<TEntity> GetAllPagedList(PaginationDto paginationDto, Expression<Func<TEntity,
+            bool>> where)
         {
-            return _dbSet.Where(where).FirstOrDefault();
+            IQueryable<TEntity> query = _dbSet.AsNoTracking();
+            //where
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+            //include
+
+            //orderby
+
+            return PagedList<TEntity>.Create(query, paginationDto.PageNumber, paginationDto.PageSize);
         }
 
-        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        public  IEnumerable<TEntity> GetManyPaging(Expression<Func<TEntity,
+            bool>> where, Func<IQueryable<TEntity>,
+            IOrderedQueryable<TEntity>> orderBy,
+            string includeEntity, int count, int firstCount, int page)
         {
-            return _dbSet.Where(where).AsEnumerable();
-        }
+            IQueryable<TEntity> query = _dbSet;
 
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+
+            foreach (var includeentity in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeentity);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return  query.Skip(firstCount).Skip(count * page).Take(count).ToList();
+        }
 
         #endregion normal
 
 
         #region Async
-        public async Task<int> CountAsync()
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> where = null)
         {
+            IQueryable<TEntity> query = _dbSet;
+            if (where != null)
+                query = query.Where(where);
             return await _dbSet.CountAsync();
         }
-        public async Task InsertAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             if (entity == null)
                 throw new ArgumentException("nulll");
             await _dbSet.AddAsync(entity);
         }
-        public async Task InsertRangeAsync(List<TEntity> entities)
+        public async Task AddRangeAsync(List<TEntity> entities)
         {
             if (entities == null)
                 throw new ArgumentException("nulll");
@@ -134,33 +208,36 @@ namespace CoreTemp.Repo.Infrastructure
         {
             return await _dbSet.FindAsync(id);
         }
-
-        public async Task<TEntity> GetAsNoTrackingByIdAsync(Expression<Func<TEntity, bool>> filter = null)
+        public async Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> where = null, params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(filter);
-        }
-
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
-        {
-            return await _dbSet.ToListAsync();
-        }
-        public async Task<IEnumerable<TEntity>> GetAllAsync(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeEntity = "")
-        {
-            //return _dbSet.Where(where).FirstOrDefault();
             IQueryable<TEntity> query = _dbSet;
-            if (filter != null)
+            if (includes != null)
             {
-                query = query.Where(filter);
-            }
-            if (includeEntity != null)
-            {
-                foreach (var include in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
+                foreach (Expression<Func<TEntity, object>> include in includes)
                     query = query.Include(include);
-                }
+            }
+
+            return await query.FirstOrDefaultAsync(where);
+        }
+        public async Task<TEntity> GetAsNoTrackingAsync(Expression<Func<TEntity, bool>> where = null)
+        {
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(where);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync(
+            Expression<Func<TEntity, bool>> where = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+             params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = _dbSet;
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+            if (includes != null)
+            {
+                foreach (Expression<Func<TEntity, object>> include in includes)
+                    query = query.Include(include);
             }
             if (orderBy != null)
             {
@@ -171,16 +248,70 @@ namespace CoreTemp.Repo.Infrastructure
                 return await query.ToListAsync();
             }
         }
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
+
+        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> where = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _dbSet.Where(where).FirstOrDefaultAsync();
+            IQueryable<TEntity> query = _dbSet;
+
+            if (includes != null)
+            {
+                foreach (Expression<Func<TEntity, object>> include in includes)
+                    query = query.Include(include);
+            }
+
+            if (where != null)
+                query = query.Where(where);
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            return await query.ToListAsync();
+        }
+        public async Task<PagedList<TEntity>> GetAllPagedListAsync(PaginationDto paginationDto, Expression<Func<TEntity,
+           bool>> where)
+        {
+            IQueryable<TEntity> query = _dbSet;
+            //where
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+            //include
+
+            //orderby
+
+            return await PagedList<TEntity>.CreateAsync(query,
+                paginationDto.PageNumber, paginationDto.PageSize);
         }
 
-        public async Task<IEnumerable<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<IEnumerable<TEntity>> GetManyAsyncPaging(Expression<Func<TEntity,
+            bool>> where, Func<IQueryable<TEntity>,
+            IOrderedQueryable<TEntity>> orderBy,
+            string includeEntity, int count, int firstCount, int page)
         {
-            return await _dbSet.Where(where).ToListAsync();
+            IQueryable<TEntity> query = _dbSet;
+
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+
+            foreach (var includeentity in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeentity);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.Skip(firstCount).Skip(count * page).Take(count).ToListAsync();
         }
+
         #endregion Async
+
+
 
         #region dispose
         private bool disposed = false;
@@ -201,66 +332,12 @@ namespace CoreTemp.Repo.Infrastructure
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+      
 
         ~Repository()
         {
             Dispose(false);
         }
         #endregion dispose
-
-        public PagedList<TEntity> GetAllPagedList(PaginationDto paginationDto)
-        {
-            IQueryable<TEntity> query = _dbSet.AsNoTracking();
-            //filter
-
-            //include
-
-            //orderby
-
-            return PagedList<TEntity>.Create(query, paginationDto.PageNumber, paginationDto.PageSize);
-        }
-
-        public async Task<PagedList<TEntity>> GetAllPagedListAsync(PaginationDto paginationDto, Expression<Func<TEntity,
-            bool>> filter)
-        {
-            IQueryable<TEntity> query = _dbSet;
-            //filter
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-            //include
-
-            //orderby
-
-            return await PagedList<TEntity>.CreateAsync(query,
-                paginationDto.PageNumber, paginationDto.PageSize);
-        }
-
-        public async Task<IEnumerable<TEntity>> GetManyAsyncPaging(Expression<Func<TEntity,
-            bool>> filter, Func<IQueryable<TEntity>,
-            IOrderedQueryable<TEntity>> orderBy,
-            string includeEntity, int count, int firstCount, int page)
-        {
-            IQueryable<TEntity> query = _dbSet;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeentity in includeEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeentity);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
-            return await query.Skip(firstCount).Skip(count * page).Take(count).ToListAsync();
-        }
-
     }
 }

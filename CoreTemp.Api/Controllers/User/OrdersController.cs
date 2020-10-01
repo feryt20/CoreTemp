@@ -78,11 +78,12 @@ namespace CoreTemp.Api.Controllers.User
         {
             ApiReturn<OrderDto> model = new ApiReturn<OrderDto> { Status = true };
 
-            var order = await _dbMain._OrderRepository.GetAllAsync(p => p.OrderId == oid && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) && !p.IsDeleted, orderBy: o => o.OrderBy(p => p.OrderId), "OrderDetails,User,PaymentLogs");
+            //var order = await _dbMain._OrderRepository.GetAllAsync(p => p.OrderId == oid && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) && !p.IsDeleted, orderBy: o => o.OrderBy(p => p.OrderId), "OrderDetails,User,PaymentLogs");
+            var order = await _dbMain._OrderRepository.GetFirstOrDefaultAsync(p => p.OrderId == oid && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) && !p.IsDeleted, p=>p.OrderDetails ,p=> p.PaymentLogs,p=>p.User);
 
             if (order != null)
             {
-                var pgForreturn = _mapper.Map<OrderDto>(order.FirstOrDefault());
+                var pgForreturn = _mapper.Map<OrderDto>(order);
                 model.Message = "Success";
                 model.Result = pgForreturn;
 
@@ -102,7 +103,7 @@ namespace CoreTemp.Api.Controllers.User
         {
             ApiReturn<string> model = new ApiReturn<string> { Status = true };
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var basketItems = await _dbBasket.MyBasketRepository.GetManyAsync(p => p.UserId == userId);
+            var basketItems = await _dbBasket.MyBasketRepository.GetAllAsync(p => p.UserId == userId,null);
 
             List<OrderDetail> oddList = new List<OrderDetail>();
             long totalPrice = 0;
@@ -131,12 +132,12 @@ namespace CoreTemp.Api.Controllers.User
                 IsFinalized = false,
                 DeliveryDate = DateTime.Now.AddDays(5)
             };
-            await _dbMain._OrderRepository.InsertAsync(order);
+            await _dbMain._OrderRepository.AddAsync(order);
             if (await _dbMain.SaveAsync() > 0)
             {
                 oddList.Select(c => { c.OrderId = order.OrderId; return c; }).ToList();
 
-                await _dbMain._OrderDetailRepository.InsertRangeAsync(oddList);
+                await _dbMain._OrderDetailRepository.AddRangeAsync(oddList);
 
                 if (await _dbMain.SaveAsync() > 0)
                 {

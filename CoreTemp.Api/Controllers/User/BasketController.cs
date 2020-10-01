@@ -49,7 +49,7 @@ namespace CoreTemp.Api.Controllers.User
         {
             ApiReturn<IEnumerable<MyBasket>> model = new ApiReturn<IEnumerable<MyBasket>> { Status = true };
 
-            var basketItems = await _dbBasket.MyBasketRepository.GetManyAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var basketItems = await _dbBasket.MyBasketRepository.GetAllAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier),null);
 
             if (basketItems != null)
             {
@@ -72,7 +72,7 @@ namespace CoreTemp.Api.Controllers.User
             ApiReturn<string> model = new ApiReturn<string> { Status = true };
             var product = await _dbMain._ProductRepository.GetByIdAsync(pid);
 
-            var basketIsExist = await _dbBasket.MyBasketRepository.GetAsync(p => p.ProductId == pid && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var basketIsExist = await _dbBasket.MyBasketRepository.GetFirstOrDefaultAsync(p => p.ProductId == pid && p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (basketIsExist != null)
             {
@@ -97,7 +97,7 @@ namespace CoreTemp.Api.Controllers.User
                         TotalPrice = product.ProductPrice - product.ProductDiscount,
                         UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
                     };
-                    await _dbBasket.MyBasketRepository.InsertAsync(basket);
+                    await _dbBasket.MyBasketRepository.AddAsync(basket);
                 }
                 else
                 {
@@ -110,7 +110,7 @@ namespace CoreTemp.Api.Controllers.User
                         TotalPrice = product.ProductPrice,
                         UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
                     };
-                    await _dbBasket.MyBasketRepository.InsertAsync(basket);
+                    await _dbBasket.MyBasketRepository.AddAsync(basket);
                 }
 
             }

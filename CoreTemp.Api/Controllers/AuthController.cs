@@ -241,7 +241,7 @@ namespace CoreTemp.Api.Controllers
             }
             var OtpId = getVerificationCodeDto.Mobile + "-OTP";
 
-            var verfyCodes = await _db._VerificationCodeRepository.GetAllAsync();
+            var verfyCodes = await _db._VerificationCodeRepository.GetAllAsync(null,null);
             foreach (var vc in verfyCodes.Where(p => p.RemoveDate < DateTime.Now))
             {
                 if (vc.RemoveDate < DateTime.Now)
@@ -283,7 +283,7 @@ namespace CoreTemp.Api.Controllers
                     };
                     vc.Id = OtpId;
                     //
-                    await _db._VerificationCodeRepository.InsertAsync(vc);
+                    await _db._VerificationCodeRepository.AddAsync(vc);
                     await _db.SaveAsync();
 
                     model.Status = true;

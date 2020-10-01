@@ -80,7 +80,7 @@ namespace CoreTemp.Api.Controllers.Admin
         {
             ApiReturn<SliderDto> model = new ApiReturn<SliderDto> { Status = true };
 
-            var pg = await _db._SliderRepository.GetAsync(p => p.SliderId == id && !p.IsDeleted);
+            var pg = await _db._SliderRepository.GetFirstOrDefaultAsync(p => p.SliderId == id && !p.IsDeleted);
 
             if (pg != null)
             {
@@ -133,7 +133,7 @@ namespace CoreTemp.Api.Controllers.Admin
             }
 
             var pg = _mapper.Map<Slider>(sliderDto);
-            await _db._SliderRepository.InsertAsync(pg);
+            await _db._SliderRepository.AddAsync(pg);
 
             if (await _db.SaveAsync() > 0)
             {

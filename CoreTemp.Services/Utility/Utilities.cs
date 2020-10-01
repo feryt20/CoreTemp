@@ -83,19 +83,16 @@ namespace CoreTemp.Services.Utility
                 //create new token
                 var newRefreshToken = CreateRefreshToken(_tokenSetting.ClientId, user.Id, tokenRequestDto.IsRemember);
                 //remove older tokens
-                var oldRefreshToken = await _db._TokenRepository.GetManyAsync(p => p.UserId == user.Id);
+                var oldRefreshToken = await _db._TokenRepository.GetAllAsync(p => p.UserId == user.Id,null);
 
                 if (oldRefreshToken.Any())
                 {
-                    foreach (var ort in oldRefreshToken)
-                    {
-                        _db._TokenRepository.Delete(ort);
-                    }
+                    _db._TokenRepository.DeleteRange(oldRefreshToken);
                 }
                 //add new refresh token to db
-                _db._TokenRepository.Insert(newRefreshToken);
+                await _db._TokenRepository.AddAsync(newRefreshToken);
 
-                _db.Save();
+                await _db.SaveAsync();
 
                 var accessToken = await CreateAccessTokenAsync(user, newRefreshToken.Value);
 
@@ -191,7 +188,7 @@ namespace CoreTemp.Services.Utility
                     : "noIp";
 
 
-            var refreshToken = await _db._TokenRepository.GetAsync(p =>
+            var refreshToken = await _db._TokenRepository.GetFirstOrDefaultAsync(p =>
                  p.ClientId == _tokenSetting.ClientId && p.Value == tokenRequestDto.RefreshToken
                  && p.IP == ip
                  );

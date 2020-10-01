@@ -75,11 +75,12 @@ namespace CoreTemp.Api.Controllers.Admin
         {
             ApiReturn<OrderDto> model = new ApiReturn<OrderDto> { Status = true };
 
-            var order = await _db._OrderRepository.GetAllAsync(p => p.OrderId == id && !p.IsDeleted,orderBy: o=>o.OrderBy(p=>p.OrderId),"OrderDetails,User,PaymentLogs");
+            //var order = await _db._OrderRepository.GetAllAsync(p => p.OrderId == id && !p.IsDeleted,orderBy: o=>o.OrderBy(p=>p.OrderId),"OrderDetails,User,PaymentLogs");
+            var order = await _db._OrderRepository.GetFirstOrDefaultAsync(p => p.OrderId == id && !p.IsDeleted, p => p.OrderDetails, p => p.PaymentLogs, p => p.User);
 
             if (order != null)
             {
-                var pgForreturn = _mapper.Map<OrderDto>(order.FirstOrDefault());
+                var pgForreturn = _mapper.Map<OrderDto>(order);
                 model.Message = "Success";
                 model.Result = pgForreturn;
 
