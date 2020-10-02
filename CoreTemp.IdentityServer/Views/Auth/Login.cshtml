@@ -1,0 +1,46 @@
+﻿@model LoginViewModel
+<h1> User login </h1>
+
+<form asp-controller="Auth" asp-action="Login" method="post">
+    <table>
+        <input type="hidden" asp-for="ReturnUrl" />
+        <tr>
+            <td>
+                <label>Username:</label>
+            </td>
+            <td>
+                <input asp-for="Username" />
+                <span asp-validation-for="Username"></span>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label>Password:</label>
+            </td>
+            <td>
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </td>
+        </tr>
+        <tr>
+            <br />
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit">Login</button>
+            </td>
+        </tr>
+
+
+    </table>
+</form>
+
+
+<div>
+
+    <a asp-controller="Auth" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register</a>
+
+</div>
+<p>@ViewBag.ErrorMessage</p>

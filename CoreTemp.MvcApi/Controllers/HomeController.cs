@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CoreTemp.MvcApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreTemp.MvcApi.Controllers
 {
@@ -21,6 +22,16 @@ namespace CoreTemp.MvcApi.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Authorize]
+        public IActionResult Secret()
+        {
+            return View();
+        }
+        public IActionResult Logout()
+        {
+            return SignOut("Cookie", "oidc");
         }
 
         public IActionResult Privacy()
