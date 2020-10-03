@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreTemp.IdentityServer2.Data;
 using CoreTemp.IdentityServer2.Models;
+using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CoreTemp.IdentityServer2
 {
@@ -30,6 +32,8 @@ namespace CoreTemp.IdentityServer2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TestConnection")));
 
@@ -40,26 +44,18 @@ namespace CoreTemp.IdentityServer2
 
             services.AddIdentityServer()
                 .AddInMemoryIdentityResources(InMemoryConfig.GetIdentityResources())
+                .AddInMemoryApiScopes(InMemoryConfig.ApiScopes())
                 .AddInMemoryClients(InMemoryConfig.GetClients())
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddDeveloperSigningCredential(); //not something we want to use in a production environment;
 
-            services.AddMvc();
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(options =>
-            //{
-            //    // base-address of your identityserver
-            //    options.Authority = "http://localhost:58249/";
 
-            //    // name of the API resource
-            //    options.Audience = "openid";
-
-            //    options.RequireHttpsMetadata = false;
-            //});
+            services.AddAuthentication("Bearer")
+                  .AddIdentityServerAuthentication("Bearer", options =>
+                  {
+                      options.Authority = "http://localhost:58249";
+                      options.RequireHttpsMetadata = false;
+                  });
 
 
         }
@@ -78,7 +74,8 @@ namespace CoreTemp.IdentityServer2
 
             app.UseIdentityServer();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

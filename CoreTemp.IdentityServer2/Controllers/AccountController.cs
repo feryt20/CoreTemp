@@ -78,7 +78,7 @@ namespace CoreTemp.IdentityServer2.Controllers
 
                 UserName = username,
                 Password = password,
-                Scope = "openid"
+                Scope = "api1"
             });
             return Ok(tokenResponse.AccessToken);
         }

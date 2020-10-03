@@ -18,7 +18,12 @@ namespace CoreTemp.IdentityServer2
               new IdentityResources.Profile()
           };
 
-      
+        public static IEnumerable<ApiScope> ApiScopes() =>
+            new List<ApiScope>
+            {
+                new ApiScope("api1", "My API")
+            };
+
         public static IEnumerable<Client> GetClients() =>
             new List<Client>
             {
@@ -27,7 +32,7 @@ namespace CoreTemp.IdentityServer2
                     ClientId = "employee",
                     ClientSecrets = new [] { new Secret("codemazesecret".Sha512()) },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId }
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, "api1" }
                 }
             };
     }
