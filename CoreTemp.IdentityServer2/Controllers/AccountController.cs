@@ -83,11 +83,5 @@ namespace CoreTemp.IdentityServer2.Controllers
             return Ok(tokenResponse.AccessToken);
         }
 
-        [Authorize]
-        [HttpGet("mytest")]
-        public IActionResult MyTest()
-        {
-            return Ok("accccc");
-        }
     }
 }

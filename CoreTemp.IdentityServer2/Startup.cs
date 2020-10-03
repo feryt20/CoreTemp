@@ -48,16 +48,6 @@ namespace CoreTemp.IdentityServer2
                 .AddInMemoryClients(InMemoryConfig.GetClients())
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddDeveloperSigningCredential(); //not something we want to use in a production environment;
-
-
-            services.AddAuthentication("Bearer")
-                  .AddIdentityServerAuthentication("Bearer", options =>
-                  {
-                      options.Authority = "http://localhost:58249";
-                      options.RequireHttpsMetadata = false;
-                  });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,9 +63,6 @@ namespace CoreTemp.IdentityServer2
             app.UseRouting();
 
             app.UseIdentityServer();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
