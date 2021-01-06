@@ -30,13 +30,13 @@ namespace CoreTemp.MvcApi
             })
                .AddCookie("Cookie")
                .AddOpenIdConnect("oidc", config => {
-                   config.Authority = "https://localhost:44329/";
+                   config.Authority = "http://localhost:58250/";
                    config.ClientId = "client_id_mvc";
                    config.ClientSecret = "client_secret_mvc";
                    config.SaveTokens = true;
                    config.ResponseType = "code";
                    config.SignedOutCallbackPath = "/Home/Index";
-
+                   config.RequireHttpsMetadata = false;
 
 
                });

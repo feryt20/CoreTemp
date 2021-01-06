@@ -30,8 +30,8 @@ namespace CoreTemp.IdentityServer
 
                     AllowedGrantTypes = GrantTypes.Code,
 
-                   RedirectUris = {"https://localhost:44347/signin-oidc"},
-                   PostLogoutRedirectUris = { "https://localhost:44347/Home/Index"},
+                   RedirectUris = {"http://localhost:49241/signin-oidc"},
+                   PostLogoutRedirectUris = { "http://localhost:49241/Home/Index"},
                     AllowedScopes = {
                         "ApiOne",
                         "ApiTwo",
