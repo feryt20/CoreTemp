@@ -69,4 +69,8 @@ namespace CoreTemp.Data.DatabaseContext
 
 
     }
+
+
+    //add-migration CoreTempMain -c CoreTempDbContext -o Migrations\DbMain
+    //update-database -Context CoreTempDbContext
 }
