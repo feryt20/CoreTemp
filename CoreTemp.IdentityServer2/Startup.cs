@@ -79,15 +79,13 @@ namespace CoreTemp.IdentityServer2
 
 /*
 
- 
-
- 
 http://localhost:58249/connect/token
 grant_type="password",
 username="",
 password="",
 scope="api1",
-client_id="ro.angular"
+client_id="employee"
+client_secret="codemazesecret"
 http://localhost:58249/api/Account/register
 {
     "Username":"Username",
@@ -97,4 +95,5 @@ http://localhost:58249/api/Account/register
     "Password":"Password!20",
     "ConfirmPassword":"Password!20"
 } 
+
  */
