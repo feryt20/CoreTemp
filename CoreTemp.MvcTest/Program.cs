@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreTemp.IdentityServer
+namespace CoreTemp.MvcTest
 {
     public class Program
     {

@@ -23,14 +23,11 @@ namespace CoreTemp.IdentityServer
         }
 
         public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var con = Configuration.GetSection("ConnectionStrings");
-            services.AddDbContext<AppDbContext>(opt => {
-                opt.UseSqlServer(con.GetSection("IdentityConnection").Value);
-            });
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer("Server =.\\;Database=IdentityServer;Trusted_Connection=true;MultipleActiveResultSets=true"));
 
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
             {
@@ -38,7 +35,6 @@ namespace CoreTemp.IdentityServer
                 config.Password.RequiredLength = 5;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
-                config.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
@@ -58,7 +54,6 @@ namespace CoreTemp.IdentityServer
             services.AddControllersWithViews();
         }
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -66,7 +61,12 @@ namespace CoreTemp.IdentityServer
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
             app.UseRouting();
             app.UseIdentityServer();
 
